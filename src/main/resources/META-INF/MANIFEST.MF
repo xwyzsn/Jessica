@@ -1,0 +1,28 @@
+Manifest-Version: 1.0
+Main-Class: jessca.study.StudyApplication
+Class-Path: dom4j-2.1.3.jar logback-classic-1.2.3.jar spring-boot-starte
+ r-aop-2.4.3.jar spring-core-5.3.4.jar javax.annotation-api-1.3.2.jar hi
+ bernate-core-5.4.28.Final.jar spring-boot-starter-2.4.3.jar jackson-dat
+ atype-jsr310-2.11.4.jar jackson-databind-2.11.4.jar spring-boot-starter
+ -data-jpa-2.4.3.jar jaxb-runtime-2.3.3.jar jboss-logging-3.4.1.Final.ja
+ r jul-to-slf4j-1.7.30.jar jakarta.el-3.0.3.jar jakarta.activation-api-1
+ .2.2.jar spring-jcl-5.3.4.jar classmate-1.5.1.jar hibernate-commons-ann
+ otations-5.1.2.Final.jar spring-tx-5.3.4.jar spring-aspects-5.3.4.jar l
+ og4j-api-2.13.3.jar tomcat-embed-websocket-9.0.43.jar druid-1.2.4.jar j
+ ackson-core-2.11.4.jar spring-data-commons-2.4.5.jar spring-webmvc-5.3.
+ 4.jar spring-boot-starter-logging-2.4.3.jar jakarta.transaction-api-1.3
+ .3.jar spring-boot-autoconfigure-2.4.3.jar slf4j-api-1.7.30.jar spring-
+ context-5.3.4.jar jakarta.annotation-api-1.3.5.jar txw2-2.3.3.jar jacks
+ on-module-parameter-names-2.11.4.jar antlr-2.7.7.jar spring-web-5.3.4.j
+ ar jackson-datatype-jdk8-2.11.4.jar spring-orm-5.3.4.jar spring-jdbc-5.
+ 3.4.jar jackson-annotations-2.11.4.jar istack-commons-runtime-3.0.11.ja
+ r spring-boot-starter-tomcat-2.4.3.jar jandex-2.2.3.Final.jar HikariCP-
+ 3.4.5.jar javassist-3.27.0-GA.jar spring-expression-5.3.4.jar snakeyaml
+ -1.27.jar tomcat-embed-core-9.0.43.jar jakarta.xml.bind-api-2.3.3.jar j
+ akarta.persistence-api-2.2.3.jar logback-core-1.2.3.jar log4j-to-slf4j-
+ 2.13.3.jar spring-data-jpa-2.4.5.jar spring-aop-5.3.4.jar jakarta.activ
+ ation-1.2.2.jar aspectjweaver-1.9.6.jar spring-boot-2.4.3.jar spring-bo
+ ot-starter-jdbc-2.4.3.jar spring-boot-starter-json-2.4.3.jar mysql-conn
+ ector-java-5.1.38.jar spring-boot-starter-web-2.4.3.jar spring-beans-5.
+ 3.4.jar byte-buddy-1.10.20.jar
+
