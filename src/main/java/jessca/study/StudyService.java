@@ -2,7 +2,12 @@ package jessca.study;
 
 import com.alibaba.druid.sql.visitor.functions.Char;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -188,6 +193,47 @@ public class StudyService {
             TotalWord totalWord=new TotalWord(name,total);
             list.add(totalWord);
         }
+        statement.close();
+        connection.close();
+        return list;
+    }
+
+    public void saveUploadedFiles(final MultipartFile[] file, String title, String description) throws Exception {
+        Connection connection = DruidFactory.getConnection();
+        String sql = "insert into pic(path,`group`,description) values(?,?,?)";
+        PreparedStatement preparedStatement = connection.prepareStatement(sql);
+        for (MultipartFile multipartFile:file) {
+            final byte[] bytes = multipartFile.getBytes();
+            final Path path = Paths.get("C:\\Users\\zzh\\Pictures\\Camera Roll\\" + multipartFile.getOriginalFilename());
+            Files.write(path, bytes);
+            preparedStatement.setString(1, String.valueOf(path));
+            preparedStatement.setString(2, String.valueOf(title));
+            preparedStatement.setString(3, String.valueOf(description));
+            preparedStatement.executeUpdate();
+
+        }
+        preparedStatement.close();
+        connection.close();
+    }
+
+    public List<Picture> getPictureInfo() throws Exception {
+        Connection connection = DruidFactory.getConnection();
+        Statement statement = connection.createStatement();
+        String sql ="select group_concat(`path`),`group`,description FROM pic  GROUP BY `group`";
+        ResultSet resultSet = statement.executeQuery(sql);
+        List<Picture> list = new ArrayList<>();
+        while (resultSet.next()){
+            String pathString = resultSet.getString(1);
+            String group = resultSet.getString(2);
+            String description = resultSet.getString(3);
+
+            String []path = pathString.split(",");
+
+            list.add(new Picture(path,group,description));
+        }
+
+
+
         statement.close();
         connection.close();
         return list;

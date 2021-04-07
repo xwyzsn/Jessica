@@ -3,13 +3,16 @@ package jessca.study;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
+import java.nio.file.*;
 //http://120.77.174.209/
 @RestController
 @RequestMapping(path = "api/study" ,method = RequestMethod.GET,produces = {"application/json;charset=UTF-8"})
-@CrossOrigin(origins = "http://120.77.174.209:8080")
+@CrossOrigin(origins = "http://localhost:8080")
 public class StudyController {
 
     private final StudyService studyService;
@@ -63,5 +66,19 @@ public class StudyController {
     public List<TotalWord> getTotalWord() throws Exception {
         return studyService.getTotalWord();
     }
+
+    @PostMapping("/upload")
+    public void handleFileUpload(@RequestPart(value = "file") final MultipartFile[] uploadfile,
+                                 @RequestParam(value = "title") String title,
+                                 @RequestParam(value = "description") String description
+    ) throws Exception {
+
+        studyService.saveUploadedFiles(uploadfile ,title,description);
+    }
+    @GetMapping("/picture")
+    public List<Picture> getPictureInfo() throws Exception {
+        return studyService.getPictureInfo();
+    }
+
 
 }
