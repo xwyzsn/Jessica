@@ -198,17 +198,18 @@ public class StudyService {
         return list;
     }
 
-    public void saveUploadedFiles(final MultipartFile[] file, String title, String description) throws Exception {
+    public void saveUploadedFiles(final MultipartFile[] file, String title, String description ,String uploadtime) throws Exception {
         Connection connection = DruidFactory.getConnection();
-        String sql = "insert into pic(path,`group`,description) values(?,?,?)";
+        String sql = "insert into pic(path,`group`,description,uploadtime) values(?,?,?,?)";
         PreparedStatement preparedStatement = connection.prepareStatement(sql);
         for (MultipartFile multipartFile:file) {
             final byte[] bytes = multipartFile.getBytes();
-            final Path path = Paths.get("C:\\Users\\zzh\\Pictures\\Camera Roll\\" + multipartFile.getOriginalFilename());
+            final Path path = Paths.get("/home/jan/Desktop/picture/" + multipartFile.getOriginalFilename());
             Files.write(path, bytes);
-            preparedStatement.setString(1, String.valueOf(path));
+            preparedStatement.setString(1, String.valueOf(multipartFile.getOriginalFilename()));
             preparedStatement.setString(2, String.valueOf(title));
             preparedStatement.setString(3, String.valueOf(description));
+            preparedStatement.setString(4,String.valueOf(uploadtime));
             preparedStatement.executeUpdate();
 
         }
@@ -219,17 +220,17 @@ public class StudyService {
     public List<Picture> getPictureInfo() throws Exception {
         Connection connection = DruidFactory.getConnection();
         Statement statement = connection.createStatement();
-        String sql ="select group_concat(`path`),`group`,description FROM pic  GROUP BY `group`";
+        String sql ="select group_concat(`path`),`group`,description,uploadtime FROM pic  GROUP BY `group`";
         ResultSet resultSet = statement.executeQuery(sql);
         List<Picture> list = new ArrayList<>();
         while (resultSet.next()){
             String pathString = resultSet.getString(1);
             String group = resultSet.getString(2);
             String description = resultSet.getString(3);
-
             String []path = pathString.split(",");
+            String uploadtime = resultSet.getString(4);
 
-            list.add(new Picture(path,group,description));
+            list.add(new Picture(path,group,description,uploadtime));
         }
 
 

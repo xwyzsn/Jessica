@@ -12,7 +12,7 @@ import java.nio.file.*;
 //http://120.77.174.209/
 @RestController
 @RequestMapping(path = "api/study" ,method = RequestMethod.GET,produces = {"application/json;charset=UTF-8"})
-@CrossOrigin(origins = "http://localhost:8080")
+@CrossOrigin(origins = "http://120.77.174.209:8080")
 public class StudyController {
 
     private final StudyService studyService;
@@ -70,10 +70,11 @@ public class StudyController {
     @PostMapping("/upload")
     public void handleFileUpload(@RequestPart(value = "file") final MultipartFile[] uploadfile,
                                  @RequestParam(value = "title") String title,
-                                 @RequestParam(value = "description") String description
+                                 @RequestParam(value = "description") String description,
+                                 @RequestParam(value = "uploadtime") String uploadtime
     ) throws Exception {
 
-        studyService.saveUploadedFiles(uploadfile ,title,description);
+        studyService.saveUploadedFiles(uploadfile ,title,description,uploadtime);
     }
     @GetMapping("/picture")
     public List<Picture> getPictureInfo() throws Exception {

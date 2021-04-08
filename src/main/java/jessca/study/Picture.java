@@ -7,6 +7,7 @@ public class Picture {
     String[] path;
     String group;
     String description;
+    String uploadtime;
 
     @Override
     public String toString() {
@@ -14,6 +15,7 @@ public class Picture {
                 "path=" + Arrays.toString(path) +
                 ", group='" + group + '\'' +
                 ", description='" + description + '\'' +
+                ", uploadtime='" + uploadtime + '\'' +
                 '}';
     }
 
@@ -41,9 +43,18 @@ public class Picture {
         this.description = description;
     }
 
-    public Picture(String[] path, String group, String description) {
+    public String getUploadtime() {
+        return uploadtime;
+    }
+
+    public void setUploadtime(String uploadtime) {
+        this.uploadtime = uploadtime;
+    }
+
+    public Picture(String[] path, String group, String description, String uploadtime) {
         this.path = path;
         this.group = group;
         this.description = description;
+        this.uploadtime = uploadtime;
     }
 }
