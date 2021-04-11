@@ -2,7 +2,8 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import qs from 'qs'
 import routes from './routes'
-
+import {VueJsonp} from 'vue-jsonp'
+Vue.use(VueJsonp)
 Vue.use(VueRouter)
 Vue.prototype.$qs = qs
 /*
@@ -28,3 +29,4 @@ export default function (/* { store, ssrContext } */) {
 
   return Router
 }
+

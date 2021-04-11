@@ -103,11 +103,11 @@ export default {
           xField:'date',
           yField:'number',
           seriesField:'name',
-
           autoFit:true
 
         })
         line.render();
+
       });
     fetch("http://120.77.174.209:8085/api/study/wordtotal").then(res=>res.json())
       .then(data=>{
