@@ -75,7 +75,7 @@ export default {
       baseurl: 'http://120.77.174.209:8080/pictures/',
       location:[],
       weather:[],
-      iconbase:'https://raw.githubusercontent.com/qwd/WeatherIcon/master/weather-icon-S2/64/',
+      iconbase:'https://gitee.com/xwyzsn/WeatherIcon/raw/master/weather-icon-S2/64/',
       sentence:'',
       weatherUpdateTime:''
 
