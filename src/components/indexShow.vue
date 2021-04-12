@@ -3,7 +3,7 @@
 
     <div class="date q-mt-md" style="height: 5%;">
       今天{{this.location['result'].ad_info.city}}天气{{this.weather["now"].text}}<q-img style="width: 5%;height: 100%" :src="this.iconbase+this.weather['now'].icon+'.png'" />,温度:{{this.weather["now"].temp}}
-    {{this.sentence}},天气数据数据更新于{{this.weatherUpdateTime}}
+    {{this.sentence}},天气数据更新于{{this.weatherUpdateTime}}
     </div>
         <span class="date q-ma-md">
             Today is the {{DiffDays()}} day we had been together!
@@ -117,12 +117,14 @@ export default {
   },
   mounted() {
     //axios get picture wall information
-    function compare(property) {
-      return function (obj1, obj2) {
-        var value1 = obj1[property];
-        var value2 = obj2[property];
-        return value1 - value2;     // 升序
+    function compare(a,b) {
+      if ( a.uploadtime >= b.uploadtime ){
+        return -1;
       }
+      if ( a.uploadtime < b.uploadtime ){
+        return 1;
+      }
+      return 0;
     }
 
     //TODO:picture should order by time,it can implemented in spring project
@@ -131,8 +133,7 @@ export default {
       await axios.get('http://120.77.174.209:8085/api/study/picture').then(res => this.picture = res.data)
         .catch(err => console.log(err))
       this.isloading = !this.isloading;
-      this.picture.sort(compare("uploadtime"))
-      this.picture.reverse()
+      this.picture=this.picture.sort(compare)
       for (let i = 0; i <= this.picture.length; i++) {
         this.slide.push(1)
       }
