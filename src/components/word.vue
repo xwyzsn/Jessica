@@ -56,10 +56,12 @@ import axios from "axios";
 import {Line} from '@antv/g2plot'
 import {Column} from "@antv/g2plot"
 export default {
+
+
   methods:{
     insert(){
       var nameInfo = window.localStorage.getItem('name');
-      axios.post('http://120.77.174.209:8085/api/study/wordpost',{name:nameInfo,number:this.num,date:this.date});
+      axios.post(this.api_url+'/api/study/wordpost',{name:nameInfo,number:this.num,date:this.date});
       this.$q.notify({message:"successfully! you can reload the page to see the graph!",position:"center"});
     },
     cancel(){
@@ -80,7 +82,8 @@ export default {
       form:[
         {name:''},
       ],
-      draw_data:''
+      draw_data:'',
+      api_url:process.env.API_URL
     }
   },
   mounted() {
@@ -102,7 +105,7 @@ export default {
     }
     this.date=year+"-"+month+"-"+day;
 
-    fetch("http://120.77.174.209:8085/api/study/word").then(res=>res.json())
+    fetch(this.api_url+"/api/study/word").then(res=>res.json())
       .then(data=>{
         const line = new Line('container',{
           data,
@@ -115,7 +118,7 @@ export default {
         line.render();
 
       });
-    fetch("http://120.77.174.209:8085/api/study/wordtotal").then(res=>res.json())
+    fetch(this.api_url+"/api/study/wordtotal").then(res=>res.json())
       .then(data=>{
         const column = new Column('container2',{
           data,

@@ -1,5 +1,6 @@
 <template>
   <div>
+
     <div class="row ">
       <div class="col-3 q-ma-md">
         <q-img src="https://gitee.com/xwyzsn/Picture/raw/master/123456.jpg"></q-img>
@@ -32,16 +33,18 @@ import axios from 'axios';
 
 export default {
   name: "gift",
+
   data(){
     return{
       radio: '0',
-      total:[]
+      total:[],
+      api_url:process.env.API_URL
     }
   },
   methods:{
     confirm(){
       //120.77.174.209
-      fetch( "http://120.77.174.209:8085/api/study/chart").then(res=>res.json()).then(data=>this.total=data)
+      fetch( api_url+"/api/study/chart").then(res=>res.json()).then(data=>this.total=data)
       var len = this.total.length;
       var sum = 0;
       for(var i=0;i<len;i++){
@@ -78,7 +81,7 @@ export default {
       var str = y+"-"+mon+"-"+d;
       var formdata = this.$qs.stringify({ date: str, score: m });
       axios({
-        url:"http://120.77.174.209:8085/api/study",
+        url:api_url+"/api/study",
         method:'post',
         data:formdata,
         headers:{
@@ -89,7 +92,7 @@ export default {
 
   },
   mounted(){
-    fetch( "http://120.77.174.209:8085/api/study/chart").then(res=>res.json()).then(data=>this.total=data);
+    fetch( api_url+"/api/study/chart").then(res=>res.json()).then(data=>this.total=data);
   }
 }
 </script>

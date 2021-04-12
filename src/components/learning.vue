@@ -88,10 +88,11 @@ export default {
       value1: '2021-04-06',
       goalflag: 1,
       score: 0,
+      api_url:process.env.API_URL
     };
   },
+
   methods: {
-    goalconfim() {},
     addToDo() {
       if (
         this.textarea == null ||
@@ -101,14 +102,10 @@ export default {
       ) {
         this.$q.notify({message:"please! check your input infomation!",position:"center"});
       }
-        //     axios
-        // .post("http://120.77.174.209:8888/api/study", { date: str, score: this.num })
-        // .then((res) => {
-        //   console.log(res);
-      // });
+
       else {
         axios
-          .post("http://120.77.174.209:8085/api/study/todo", {
+          .post(this.api_url+"/api/study/todo", {
             date: this.value1,
             text: this.textarea,
           })
@@ -121,13 +118,13 @@ export default {
     finish(index) {
       var key = this.todo[index]["id"];
       axios
-        .delete("http://120.77.174.209:8085/api/study/todo/" + key)
+        .delete(this.api_url+"/api/study/todo/" + key)
         .then((res) => console.log(res));
       this.$q.notify({message:"GOOD JOB !",position:"center"});
     },
     open() {
       axios
-        .get("http://120.77.174.209:8085/api/study")
+        .get(this.api_url+"/api/study")
         .then((res) => (this.test = res.data));
       var len = this.test.length;
       var sum = 0;
@@ -151,7 +148,7 @@ export default {
       var formdata = this.$qs.stringify({ date: str, score: this.num });
 
       axios({
-        url: "http://120.77.174.209:8085/api/study",
+        url: this.api_url+"/api/study",
         method: "post",
         data: formdata,
         headers: {
@@ -171,11 +168,11 @@ export default {
   },
   mounted() {
     axios
-      .get("http://120.77.174.209:8085/api/study/todolist")
+      .get(this.api_url+"/api/study/todolist")
       .then((res2) => (this.todo = res2.data))
       .catch((e) => console.log(e));
     axios
-      .get("http://120.77.174.209:8085/api/study")
+      .get(this.api_url+"/api/study")
       .then((res) => (this.test = res.data));
 
     var date = new Date();

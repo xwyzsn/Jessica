@@ -17,7 +17,7 @@
       >
         <q-uploader
           ref="uploader"
-          url="http://120.77.174.209:8085/api/study/upload"
+          :url=url
           label="可多选"
           multiple
           batch
@@ -66,12 +66,15 @@
 
 export default {
   name: "upload",
+
   data () {
     return {
       step: 1,
       mytitle:'',
       description:'',
       date:'',
+      url:'',
+      api_url:process.env.API_URL
     }
   },
   mounted() {
@@ -94,7 +97,7 @@ export default {
       min="0"+min
     }
     this.date = year+"-"+month+"-"+day + " "+hour+":"+min
-
+    this.url = this.api_url+'/api/study/upload'
   },
   methods:{
     additionalData(){

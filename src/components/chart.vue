@@ -10,14 +10,16 @@
 <script>
 import {Line} from '@antv/g2plot'
 export default {
+
   data () {
     return {
-      chartdata:[]
+      chartdata:[],
+      api_url:process.env.API_URL
     }
   },
   mounted(){
     fetch(
-      "http://120.77.174.209:8085/api/study/chart2"
+      this.api_url+"/api/study/chart2"
     ).then(res=>res.json()).then((data)=>{
       const linePlot =new Line('container',{
         data,
@@ -26,6 +28,7 @@ export default {
       })
       linePlot.render();
     })
+
   }
 }
 </script>

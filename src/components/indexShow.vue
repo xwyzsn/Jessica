@@ -63,6 +63,7 @@
 import axios from "axios";
 export default {
   name: 'indexShow',
+
   data() {
     return {
       date: new Date(),
@@ -77,8 +78,8 @@ export default {
       weather:[],
       iconbase:'https://gitee.com/xwyzsn/WeatherIcon/raw/master/weather-icon-S2/64/',
       sentence:'',
-      weatherUpdateTime:''
-
+      weatherUpdateTime:'',
+      api_url:process.env.API_URL
     }
   },
   methods: {
@@ -130,7 +131,7 @@ export default {
     //TODO:picture should order by time,it can implemented in spring project
 
     const loadPictureInfo = async () => {
-      await axios.get('http://120.77.174.209:8085/api/study/picture').then(res => this.picture = res.data)
+      await axios.get(this.api_url+'/api/study/picture').then(res => this.picture = res.data)
         .catch(err => console.log(err))
       this.isloading = !this.isloading;
       this.picture=this.picture.sort(compare)
