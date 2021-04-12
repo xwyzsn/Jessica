@@ -75,7 +75,6 @@ export default {
     }
   },
   mounted() {
-    // TODO：time format remain to be done , still with some error
     var tmpDate=new Date()
     var day = tmpDate.getDay()
     var year = tmpDate.getFullYear()
