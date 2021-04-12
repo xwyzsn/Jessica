@@ -94,6 +94,12 @@ export default {
     var year = date.getFullYear();
     var month = date.getMonth()+1;
     var day = date.getDate();
+    if(month<10){
+      month="0"+month
+    }
+    if(day<10){
+      day="0"+day
+    }
     this.date=year+"-"+month+"-"+day;
 
     fetch("http://120.77.174.209:8085/api/study/word").then(res=>res.json())
