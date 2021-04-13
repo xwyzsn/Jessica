@@ -79,7 +79,7 @@ export default {
   },
   mounted() {
     var tmpDate=new Date()
-    var day = tmpDate.getDay()
+    var day = tmpDate.getDate()
     var year = tmpDate.getFullYear()
     var month =tmpDate.getMonth()+1
     var hour = tmpDate.getHours()

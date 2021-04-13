@@ -144,6 +144,12 @@ export default {
       var year = date.getFullYear();
       var month = date.getMonth() + 1;
       var day = date.getDate();
+      if(month<10){
+        month="0"+month
+      }
+      if(day<10){
+        day = "0" +day
+      }
       var str = year + "-" + month + "-" + day;
       var formdata = this.$qs.stringify({ date: str, score: this.num });
 
