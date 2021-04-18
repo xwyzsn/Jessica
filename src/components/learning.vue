@@ -173,9 +173,24 @@ export default {
     },
   },
   mounted() {
+
+    function compare(a,b){
+      if(a.date>=b.date){
+        return 1;
+      }
+      if(a.date<b.date){
+        return -1;
+      }
+      return 0;
+    }
+
+
     axios
       .get(this.api_url+"/api/study/todolist")
-      .then((res2) => (this.todo = res2.data))
+      .then((res2) => {
+        
+        this.todo = res2.data
+        this.todo=this.todo.sort(compare)})
       .catch((e) => console.log(e));
     axios
       .get(this.api_url+"/api/study")

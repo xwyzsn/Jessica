@@ -1,6 +1,12 @@
 <template>
   <div class="indexShow" >
+                <q-ajax-bar
+      ref="bar"
+      position="top"
+      color="accent"
+      size="10px"
 
+    />
     <div class="date q-mt-md" style="height: 5%;">
       今天{{this.location['result'].ad_info.city}}天气{{this.weather["now"].text}}<q-img style="width: 5%;height: 100%" :src="this.iconbase+this.weather['now'].icon+'.png'" />,温度:{{this.weather["now"].temp}}
     {{this.sentence}},天气数据更新于{{this.weatherUpdateTime}}
@@ -9,6 +15,7 @@
             Today is the {{DiffDays()}} day we had been together!
         </span>
     <div class="row mobile-only " v-if="this.isloading==true" >
+
       <q-card v-for="i in this.numOfOnePage" :key="i" style="width: 80%;margin-left: 10%">
         <q-skeleton height="200px" square></q-skeleton>
         <q-item-label>
@@ -30,7 +37,8 @@
 
           >
             <q-carousel-slide :name="index2+1" v-for="(i,index2) in item.path " :key="i">
-              <q-img style="object-fit: cover;width:100%" :src="baseurl+i"></q-img>
+              <q-img style="object-fit: cover;width:100%" :src="baseurl+i" spinner-color="primary"></q-img>
+
 
             </q-carousel-slide>
 
@@ -127,9 +135,8 @@ export default {
       }
       return 0;
     }
-
     //TODO:picture should order by time,it can implemented in spring project
-
+    this.baseurl="http://localhost:8080/pictures/"
     const loadPictureInfo = async () => {
       await axios.get(this.api_url+'/api/study/picture').then(res => this.picture = res.data)
         .catch(err => console.log(err))

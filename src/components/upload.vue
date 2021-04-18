@@ -8,6 +8,8 @@
       animated
       vertical
       keep-alive
+      header-nav
+
     >
       <q-step
         :name="1"
@@ -26,6 +28,7 @@
           class="q-mt-lg"
           :form-fields="additionalData"
         />
+
       </q-step>
 
       <q-step
@@ -53,6 +56,13 @@
         </q-stepper-navigation>
       </template>
     </q-stepper>
+                <q-ajax-bar
+      ref="bar"
+      position="top"
+      color="accent"
+      size="10px"
+      skip-hijack
+    />
   </div>
 
 
@@ -74,10 +84,11 @@ export default {
       description:'',
       date:'',
       url:'',
-      api_url:process.env.API_URL
+      api_url:process.env.API_URL,
     }
   },
   mounted() {
+
     var tmpDate=new Date()
     var day = tmpDate.getDate()
     var year = tmpDate.getFullYear()
@@ -112,8 +123,16 @@ export default {
 
     },
     finish(){
-      this.$nextTick(() => {this.$refs.uploader.upload ()})
-      this.$q.notify({message:'上传成功！',position:'center'})
+          const bar = this.$refs.bar
+      bar.start()
+      this.$nextTick(() => {
+        const UPLOAD = async ()=>{ await this.$refs.uploader.upload ()
+        this.$q.notify({message:'上传成功！',position:'center'})
+        bar.stop()
+        }
+        UPLOAD()
+      // this.$q.notify({message:'上传成功！',position:'center'})
+      })
     }
 
   }
