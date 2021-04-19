@@ -52,11 +52,11 @@
         <q-stepper-navigation>
           <q-btn @click="moveNext" color="primary" v-if="step!=4" label="下一步" />
           <q-btn @click="finish" color="primary" v-else label="完成" />
-          <q-btn v-if="step > 1" flat color="primary" @click="$refs.stepper.previous()" label="Back" class="q-ml-sm" />
+          <q-btn v-if="step > 1" flat color="primary" @click="this.$refs.stepper.previous()" label="Back" class="q-ml-sm" />
         </q-stepper-navigation>
       </template>
     </q-stepper>
-                <q-ajax-bar
+    <q-ajax-bar
       ref="bar"
       position="top"
       color="accent"

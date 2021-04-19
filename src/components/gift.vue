@@ -1,5 +1,12 @@
 <template>
-  <div>
+  <div>   
+     <q-ajax-bar
+      ref="bar"
+      position="top"
+      color="accent"
+      size="10px"
+      skip-hijack
+    />
 
     <div class="row ">
       <div class="col-3 q-ma-md">
@@ -25,7 +32,9 @@
 <!--      function: confirm-->
       <q-btn color="primary" @click="confirm">确认</q-btn>
     </div>
+    
   </div>
+  
 </template>
 
 <script>
@@ -44,13 +53,19 @@ export default {
   methods:{
     confirm(){
       //120.77.174.209
-      fetch( api_url+"/api/study/chart").then(res=>res.json()).then(data=>this.total=data)
+      
+
+    const getData = async ()=>{
+      await    fetch( this.api_url+"/api/study/chart").then(res=>res.json()).then(data=>this.total=data)
+
+      console.log(this.total)
       var len = this.total.length;
       var sum = 0;
       for(var i=0;i<len;i++){
         sum+=this.total[i]["score"];
       }
       var m = 0
+      console.log("sum"+sum)
       console.log(this.radio)
       if(this.radio=="0"){
         this.$q.notify({message:'啥都没选!',position:"center"})
@@ -80,6 +95,59 @@ export default {
       var y = DATE.getFullYear();
       var str = y+"-"+mon+"-"+d;
       var formdata = this.$qs.stringify({ date: str, score: m });
+      console.log(this.api_url+"/api/study")
+      console.log(m)
+      axios({
+        url: this.api_url+"/api/study",
+        method: "post",
+        data: formdata,
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+      });
+    }
+
+      getData()
+      //fetch( this.api_url+"/api/study/chart").then(res=>res.json()).then(data=>this.total=data)
+
+      // console.log(this.total)
+      // var len = this.total.length;
+      // var sum = 0;
+      // for(var i=0;i<len;i++){
+      //   sum+=this.total[i]["score"];
+      // }
+      // var m = 0
+      // console.log("sum"+sum)
+      // console.log(this.radio)
+      // if(this.radio=="0"){
+      //   this.$q.notify({message:'啥都没选!',position:"center"})
+      // }
+      // else if (this.radio=="1" && sum>=10){
+      //   this.$q.notify({message:"成功兑换一杯奶茶!"+new Date(),position:"center"})
+      //   m=-10;
+      // }
+      // else if(this.radio=="2" &&sum>=50){
+      //   this.$q.notify({message:"成功兑换一次火锅"+new Date(),position:"center"})
+      //   m=-50;
+      // }
+      // else if(this.radio=="3" &&sum>=100){
+      //   this.$q.notify({message:"成功兑换一次meeting"+new Date(),position:"center"})
+      //   m=-100;
+      // }
+      // else if(this.radio=="4" &&sum>=150){
+      //   this.$q.notify({message:"成功兑换一次心愿"+new Date(),position:"center"})
+      //   m=-150;
+      // }
+      // else{
+      //   this.$q.notify({message:"积分不够继续努力~",position:"center"})
+      // }
+      // var DATE = new Date();
+      // var d = DATE.getDate();
+      // var mon = DATE.getMonth()+1;
+      // var y = DATE.getFullYear();
+      // var str = y+"-"+mon+"-"+d;
+      // var formdata = this.$qs.stringify({ date: str, score: m });
+      // axios.post(url=this.api_url+"/api/study",data=formdata,headers={'Content-Type':'application/x-www-form-urlencoded'})
       axios({
         url:api_url+"/api/study",
         method:'post',
