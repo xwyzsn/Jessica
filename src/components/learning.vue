@@ -15,7 +15,12 @@
         </div>
       </div>
     </q-form>
-
+          <q-ajax-bar
+      ref="bar"
+      position="bottom"
+      color="accent"
+      size="10px"
+    />
     <q-separator />
     <q-form  @submit="addToDo" >
       <div style="width:100%;text-align:center">

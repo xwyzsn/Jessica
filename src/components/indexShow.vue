@@ -9,6 +9,7 @@
             Today is the {{DiffDays()}} day we had been together!
         </span>
     <div class="row mobile-only " v-if="this.isloading==true" >
+
       <q-card v-for="i in this.numOfOnePage" :key="i" style="width: 80%;margin-left: 10%">
         <q-skeleton height="200px" square></q-skeleton>
         <q-item-label>
