@@ -56,13 +56,7 @@
         </q-stepper-navigation>
       </template>
     </q-stepper>
-    <q-ajax-bar
-      ref="bar"
-      position="top"
-      color="accent"
-      size="10px"
-      skip-hijack
-    />
+
   </div>
 
 

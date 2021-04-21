@@ -135,8 +135,6 @@ export default {
       }
       return 0;
     }
-    //TODO:picture should order by time,it can implemented in spring project
-    this.baseurl="http://localhost:8080/pictures/"
     const loadPictureInfo = async () => {
       await axios.get(this.api_url+'/api/study/picture').then(res => this.picture = res.data)
         .catch(err => console.log(err))
@@ -166,7 +164,7 @@ export default {
         if(temp<=15){
           this.sentence="今天有点冷，宝贝记得多穿点"
         }
-        else if(temp>15&&temp<25){
+        else if(temp>15&&temp<22){
           this.sentence="今天温度刚刚好"
         }
         else {

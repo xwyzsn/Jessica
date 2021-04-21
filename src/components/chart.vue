@@ -18,6 +18,7 @@ export default {
     }
   },
   mounted(){
+    //TODO: axios 和fetch 需要更换
     fetch(
       this.api_url+"/api/study/chart2"
     ).then(res=>res.json()).then((data)=>{
