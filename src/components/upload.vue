@@ -52,7 +52,7 @@
         <q-stepper-navigation>
           <q-btn @click="moveNext" color="primary" v-if="step!=4" label="下一步" />
           <q-btn @click="finish" color="primary" v-else label="完成" />
-          <q-btn v-if="step > 1" flat color="primary" @click="this.$refs.stepper.previous()" label="Back" class="q-ml-sm" />
+          <q-btn v-if="step > 1" flat color="primary" @click="movePre" label="Back" class="q-ml-sm" />
         </q-stepper-navigation>
       </template>
     </q-stepper>
@@ -116,13 +116,15 @@ export default {
       this.$refs.stepper.next()
 
     },
+    movePre(){
+      this.$refs.stepper.previous()
+    }
+    ,
+
     finish(){
-          const bar = this.$refs.bar
-      bar.start()
       this.$nextTick(() => {
         const UPLOAD = async ()=>{ await this.$refs.uploader.upload ()
         this.$q.notify({message:'上传成功！',position:'center'})
-        bar.stop()
         }
         UPLOAD()
       // this.$q.notify({message:'上传成功！',position:'center'})
