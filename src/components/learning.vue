@@ -15,12 +15,7 @@
         </div>
       </div>
     </q-form>
-          <q-ajax-bar
-      ref="bar"
-      position="bottom"
-      color="accent"
-      size="10px"
-    />
+
     <q-separator />
     <q-form  @submit="addToDo" >
       <div style="width:100%;text-align:center">
@@ -193,7 +188,7 @@ export default {
     axios
       .get(this.api_url+"/api/study/todolist")
       .then((res2) => {
-        
+
         this.todo = res2.data
         this.todo=this.todo.sort(compare)})
       .catch((e) => console.log(e));

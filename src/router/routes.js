@@ -10,7 +10,8 @@ const routes = [
       {path: '/gift',component:()=>import('components/gift.vue')},
       {path: '/chart',component:()=>import('components/chart.vue')},
       {path: '/word',component:()=>import('components/word.vue')},
-      {path: '/pic',component:()=>import('components/upload.vue')}
+      {path: '/pic',component:()=>import('components/upload.vue')},
+      {path:'/g-list',component:()=>import('components/giftchange.vue')}
     ]
   },
 

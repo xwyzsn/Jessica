@@ -105,8 +105,9 @@ export default {
     }
     this.date=year+"-"+month+"-"+day;
 
-    fetch(this.api_url+"/api/study/word").then(res=>res.json())
-      .then(data=>{
+    axios.get(this.api_url+"/api/study/word")
+      .then(res=>{
+        var data = res.data
         const line = new Line('container',{
           data,
           xField:'date',
@@ -118,8 +119,9 @@ export default {
         line.render();
 
       });
-    fetch(this.api_url+"/api/study/wordtotal").then(res=>res.json())
-      .then(data=>{
+    axios.get(this.api_url+"/api/study/wordtotal")
+      .then(res=>{
+        var data = res.data
         const column = new Column('container2',{
           data,
           xField:'name',

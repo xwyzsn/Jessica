@@ -9,6 +9,7 @@
 
 <script>
 import {Line} from '@antv/g2plot'
+import axios from "axios";
 export default {
 
   data () {
@@ -18,10 +19,10 @@ export default {
     }
   },
   mounted(){
-    //TODO: axios 和fetch 需要更换
-    fetch(
+    axios.get(
       this.api_url+"/api/study/chart2"
-    ).then(res=>res.json()).then((data)=>{
+    ).then((res)=>{
+      var data =res.data
       const linePlot =new Line('container',{
         data,
         xField:'date',

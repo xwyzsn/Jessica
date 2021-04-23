@@ -69,6 +69,15 @@
               上传照片
             </q-item-section>
           </q-item>
+          <q-item to="/g-list" clickable v-ripple>
+            <q-item-section avatar>
+              <q-icon :name="mdiHistory" />
+            </q-item-section>
+
+            <q-item-section>
+              兑换记录
+            </q-item-section>
+          </q-item>
         </q-list>
 
       </q-scroll-area>
@@ -84,6 +93,7 @@
 
 <script>
 import {outlinedSortByAlpha,outlinedInsertPhoto,outlinedCardGiftcard,outlinedEdit,outlinedTimeline,} from "@quasar/extras/material-icons-outlined"
+import {mdiHistory } from "@quasar/extras/mdi-v5"
 export default {
   data () {
     return {
@@ -96,6 +106,7 @@ export default {
     this.outlinedCardGiftcard=outlinedCardGiftcard
     this.outlinedEdit=outlinedEdit
     this.outlinedTimeline=outlinedTimeline
+    this.mdiHistory=mdiHistory
   }
 }
 </script>
