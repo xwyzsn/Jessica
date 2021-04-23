@@ -239,4 +239,23 @@ public class StudyService {
         connection.close();
         return list;
     }
+
+    public List<Study> getGiftList() throws Exception {
+        Connection connection = DruidFactory.getConnection();
+        Statement statement = connection.createStatement();
+        String sql = "SELECT * FROM study WHERE score<=-10 ORDER BY date DESC";
+        ResultSet resultSet = statement.executeQuery(sql);
+        List<Study> list = new ArrayList<>();
+        while (resultSet.next()){
+            Integer id = resultSet.getInt(1);
+            String date = resultSet.getString(2);
+            Integer score = resultSet.getInt(3);
+            Study study = new Study(date,score,id);
+            list.add(study);
+        }
+        statement.close();
+        connection.close();
+        return list;
+
+    }
 }

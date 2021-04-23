@@ -80,6 +80,9 @@ public class StudyController {
     public List<Picture> getPictureInfo() throws Exception {
         return studyService.getPictureInfo();
     }
-
+    @GetMapping("/giftlist")
+    public List<Study> getGiftList() throws Exception {
+       return studyService.getGiftList();
+    }
 
 }
