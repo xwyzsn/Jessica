@@ -84,5 +84,10 @@ public class StudyController {
     public List<Study> getGiftList() throws Exception {
        return studyService.getGiftList();
     }
+    @PutMapping("/finishgift")
+    public void updateGiftStatus(@RequestParam(value="id") Integer id,
+                                 @RequestParam(value="finish") String finish) throws Exception {
+        studyService.updateGiftStatus(id,finish);
+    }
 
 }

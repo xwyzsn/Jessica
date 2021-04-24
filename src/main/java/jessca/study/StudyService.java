@@ -250,12 +250,23 @@ public class StudyService {
             Integer id = resultSet.getInt(1);
             String date = resultSet.getString(2);
             Integer score = resultSet.getInt(3);
-            Study study = new Study(date,score,id);
+            String name = resultSet.getString(4);
+            String finish = resultSet.getString(5);
+            Study study = new Study(date,score,id,name,finish);
             list.add(study);
         }
         statement.close();
         connection.close();
         return list;
 
+    }
+
+    public void updateGiftStatus(Integer id, String finish) throws Exception {
+        Connection connection = DruidFactory.getConnection();
+        Statement statement = connection.createStatement();
+        String sql = "update study  set gift_finish=\'"+finish+"\' where id=" +id+";";
+        int f = statement.executeUpdate(sql);
+        statement.close();
+        connection.close();
     }
 }
