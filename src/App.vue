@@ -1,6 +1,6 @@
 <template>
   <div id="q-app">
-    <router-view />
+    <router-view v-if="isRouterAlive" />
         <q-ajax-bar
       ref="bar"
       position="top"
@@ -11,6 +11,26 @@
 </template>
 <script>
 export default {
-  name: 'App'
+  name: 'App',
+  provide (){
+    return {
+      reload:this.reload
+    }
+  },
+  data(){
+    return {
+      isRouterAlive:true
+    }
+  },
+  methods:{
+    reload (){
+      this.isRouterAlive = false
+      this.$nextTick(function(){
+        this.isRouterAlive = true
+      })
+    }
+  },
+  components:{
+  }
 }
 </script>

@@ -63,6 +63,8 @@ export default {
       var nameInfo = window.localStorage.getItem('name');
       axios.post(this.api_url+'/api/study/wordpost',{name:nameInfo,number:this.num,date:this.date});
       this.$q.notify({message:"successfully! you can reload the page to see the graph!",position:"center"});
+      //TODO: 还没部署到网站上,reload刷新页面
+      this.reload()
     },
     cancel(){
       this.dialog=false;

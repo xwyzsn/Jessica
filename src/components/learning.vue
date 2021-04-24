@@ -79,6 +79,7 @@
 <script>
 import axios from "axios";
 export default {
+  inject:['reload'],
   data() {
     return {
       textarea: "",
@@ -112,6 +113,7 @@ export default {
           .then((res) => {
             console.log(res);
           });
+        this.reload()
         this.$q.notify({message:"add successfully! refresh the page to check!",position:"center"});
       }
     },
@@ -121,6 +123,7 @@ export default {
         .delete(this.api_url+"/api/study/todo/" + key)
         .then((res) => console.log(res));
       this.$q.notify({message:"GOOD JOB !",position:"center"});
+      this.reload()
     },
     open() {
       axios
@@ -161,6 +164,7 @@ export default {
           "Content-Type": "application/x-www-form-urlencoded",
         },
       });
+      this.reload()
 
       // axios
       //   .post("http://120.77.174.209:8888/api/study", this.$qs.stringify({ date: str, score: this.num }),{headers:{'content-type':'application/x-www-form-urlencoded'}})
