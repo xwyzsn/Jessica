@@ -1,6 +1,6 @@
 <template>
 
-  <div class="q-ma-md" >
+  <div class="q-ma-md q-mt-lg" >
 
     <q-list bordered padding class="rounded-borders" style="max-width: 100%;width: 100%;">
       <q-item-label header>兑换记录</q-item-label>
@@ -69,7 +69,8 @@ export default {
             data:formdata,
             headers:{"Content-Type": "multipart/form-data" }
           })
-          this.reload()
+          .then(()=>{this.reload()})
+
 
         }
       }

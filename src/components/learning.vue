@@ -55,6 +55,12 @@
       </div>
     </q-form>
     <q-separator />
+
+    <div class="q-mt-md" style=" width: 100%;">
+      <canlendar />
+    </div>
+
+    <q-separator />
     <p style="text-align: center;" class="q-mt-sm"><strong>待办事项</strong></p>
     <div>
       <div class="row q-mt-md" v-for="(num,index) in this.todo.length" :key="index" v-bind="todo">
@@ -78,8 +84,13 @@
 </template>
 <script>
 import axios from "axios";
+import canlendar from "components/canlendar";
 export default {
   inject:['reload'],
+  components: {
+    canlendar
+  }
+,
   data() {
     return {
       textarea: "",
@@ -110,20 +121,20 @@ export default {
             date: this.value1,
             text: this.textarea,
           })
-          .then((res) => {
-            console.log(res);
+          .then(() => {
+            this.reload()
+            this.$q.notify({message:"add successfully! refresh the page to check!",position:"center"});
+
           });
-        this.reload()
-        this.$q.notify({message:"add successfully! refresh the page to check!",position:"center"});
-      }
+          }
     },
     finish(index) {
       var key = this.todo[index]["id"];
       axios
         .delete(this.api_url+"/api/study/todo/" + key)
-        .then((res) => console.log(res));
-      this.$q.notify({message:"GOOD JOB !",position:"center"});
-      this.reload()
+        .then(() => {      this.$q.notify({message:"GOOD JOB !",position:"center"});
+          this.reload()});
+
     },
     open() {
       axios
@@ -163,8 +174,8 @@ export default {
         headers: {
           "Content-Type": "application/x-www-form-urlencoded",
         },
-      });
-      this.reload()
+      }).then(()=>{this.reload()})
+
 
       // axios
       //   .post("http://120.77.174.209:8888/api/study", this.$qs.stringify({ date: str, score: this.num }),{headers:{'content-type':'application/x-www-form-urlencoded'}})
@@ -217,58 +228,6 @@ export default {
 };
 </script>
 <style>
-.el-row {
-  margin-bottom: 20px;
-}
-.el-col {
-  border-radius: 4px;
-}
-.bg-purple-dark {
-  background: #99a9bf;
-}
-.bg-purple {
-  background: #d3dce6;
-}
-.bg-purple-light {
-  background: #e5e9f2;
-}
-.grid-content {
-  border-radius: 4px;
-  min-height: 36px;
-}
-.row-bg {
-  padding: 10px 0;
-  background-color: #f9fafc;
-}
-.time {
-  font-size: 13px;
-  color: #999;
-}
-
-.bottom {
-  margin-top: 13px;
-  line-height: 12px;
-}
-
-.button {
-  padding: 0;
-  float: right;
-}
-
-.image {
-  width: 100%;
-  display: block;
-}
-
-.clearfix:before,
-.clearfix:after {
-  display: table;
-  content: "";
-}
-
-.clearfix:after {
-  clear: both;
-}
 .input-text {
   width: 100%;
   height: 50px;
