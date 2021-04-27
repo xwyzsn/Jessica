@@ -40,7 +40,12 @@ public class StudyService {
         System.out.println(study.date);
         String date = study.date;
         Integer score = study.score;
-        String sql = "insert into study(date,score) values("+" \""+date+"\" ,"+score+")";
+        String name = null;
+        if(!study.name.equals("")||study.name!=null){
+            name=study.name;
+        }
+
+        String sql = "insert into study(date,score,gift_name) values("+" \""+date+"\" ,"+score+",\""+name+"\""+")";
         System.out.println(sql);
         Statement statement =conn.createStatement();
         int f = statement.executeUpdate(sql);
