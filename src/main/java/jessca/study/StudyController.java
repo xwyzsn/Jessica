@@ -12,7 +12,7 @@ import java.nio.file.*;
 //http://120.77.174.209/
 @RestController
 @RequestMapping(path = "api/study" ,method = RequestMethod.GET,produces = {"application/json;charset=UTF-8"})
-@CrossOrigin(origins = "http://120.77.174.209:8080")
+@CrossOrigin(value = "*")
 public class StudyController {
 
     private final StudyService studyService;
@@ -27,8 +27,8 @@ public class StudyController {
 
         return studyService.getStudy();
     }
-    @PostMapping(consumes = "application/x-www-form-urlencoded")
-    public  void postToDb( Study study) throws Exception {
+    @PostMapping(path = "score")
+    public  void postToDb(@RequestBody Study study) throws Exception {
         studyService.postToDb(study);
     }
 

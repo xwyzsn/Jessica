@@ -41,7 +41,7 @@ public class StudyService {
         String date = study.date;
         Integer score = study.score;
         String name = null;
-        if(!study.name.equals("")||study.name!=null){
+        if(study.name!=null&&!study.name.equals("")){
             name=study.name;
         }
 
