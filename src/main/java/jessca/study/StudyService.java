@@ -41,12 +41,16 @@ public class StudyService {
         String date = study.date;
         Integer score = study.score;
         String name = null;
+        String sql ="";
         if(study.name!=null&&!study.name.equals("")){
             name=study.name;
+            sql = "insert into study(date,score,gift_name) values("+" \""+date+"\" ,"+score+",\""+name+"\""+")";
         }
 
-        String sql = "insert into study(date,score,gift_name) values("+" \""+date+"\" ,"+score+",\""+name+"\""+")";
-        System.out.println(sql);
+        else {
+            sql = "insert into study(date,score) values(" + " \"" + date + "\" ," + score + ")";
+        }
+//        System.out.println(sql);
         Statement statement =conn.createStatement();
         int f = statement.executeUpdate(sql);
         if(f!=0){
@@ -248,7 +252,7 @@ public class StudyService {
     public List<Study> getGiftList() throws Exception {
         Connection connection = DruidFactory.getConnection();
         Statement statement = connection.createStatement();
-        String sql = "SELECT * FROM study WHERE score<=-10 ORDER BY date DESC";
+        String sql = "SELECT * FROM study WHERE score<0 and gift_name is NOT NULL  ORDER BY date DESC";
         ResultSet resultSet = statement.executeQuery(sql);
         List<Study> list = new ArrayList<>();
         while (resultSet.next()){
