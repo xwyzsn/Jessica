@@ -38,10 +38,28 @@ export default function (/* { store, ssrContext } */) {
   Router.beforeEach((to,from,next)=>{
     let auth = localStorage.getItem('auth')
     if(to.name !== 'login' && !auth ){
+
       next({name:'login'})
     }
     else if (to.name ==='login' && auth){
-      next()
+          next()
+          localStorage.clear();
+    }
+    else if(from.name ==='login' && auth){
+      axios.get(process.env.API_URL+"/api/study/user",{
+        headers:{
+          Authorization:localStorage.getItem('auth')
+        }
+
+      })
+        .then(res=>{
+          if(res.data.code!==400){
+
+            next()
+          }
+        }).catch(err=>{
+        localStorage.clear()
+      })
     }
     else {
       next()
