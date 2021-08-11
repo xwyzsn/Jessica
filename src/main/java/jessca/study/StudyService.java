@@ -18,15 +18,18 @@ public class StudyService {
 
     public StudyService() throws Exception {
     }
-    public List<Study> getStudy() throws Exception{
+    public List<Study> getStudy(String username) throws Exception{
         Connection conn = DruidFactory.getConnection();
         List<Study> l = new ArrayList<Study>();
         Statement statement = conn.createStatement();
-        String sql = "select * from study ";
+        String sql = "select * from study where username = \""+username+"\"";
+        System.out.println(sql);
         ResultSet resultSet = statement.executeQuery(sql);
+        System.out.println(resultSet);
         while (resultSet.next()){
             String date = resultSet.getString(2);
             int score = resultSet.getInt(3);
+            System.out.println(score);
             int id = resultSet.getInt(1);
             l.add(new Study(date,score,id));
         }
@@ -37,30 +40,44 @@ public class StudyService {
 
     public void postToDb(Study study) throws Exception {
         Connection conn = DruidFactory.getConnection();
-        System.out.println(study.date);
+
+        System.out.println(study);
         String date = study.date;
         Integer score = study.score;
         String name = null;
         String sql ="";
+        String username = study.username;
+        Integer res=null;
         if(study.name!=null&&!study.name.equals("")){
             name=study.name;
-            sql = "insert into study(date,score,gift_name) values("+" \""+date+"\" ,"+score+",\""+name+"\""+")";
+            sql = "insert into study(date,score,gift_name,username) values(?,?,?,?) ";
+            PreparedStatement preparedStatement = conn.prepareStatement(sql);
+            preparedStatement.setString(1,date);
+            preparedStatement.setInt(2,score);
+            preparedStatement.setString(3,name);
+            preparedStatement.setString(4,username);
+            res = preparedStatement.executeUpdate();
+            preparedStatement.close();
         }
 
         else {
-            sql = "insert into study(date,score) values(" + " \"" + date + "\" ," + score + ")";
+            sql = "insert into study(date,score,username) values(?,?,?)";
+            PreparedStatement preparedStatement = conn.prepareStatement(sql);
+            preparedStatement.setString(1,date);
+            preparedStatement.setInt(2,score);
+            preparedStatement.setString(3,username);
+            res = preparedStatement.executeUpdate();
+
+            preparedStatement.close();
         }
 //        System.out.println(sql);
-        Statement statement =conn.createStatement();
-        int f = statement.executeUpdate(sql);
-        if(f!=0){
+        if(res!=0){
             System.out.println("success");
         }
         else {
             System.out.println("fail");
         }
 
-        statement.close();
         conn.close();
     }
     public List<ToDo> getTodo() throws Exception {
@@ -117,13 +134,14 @@ public class StudyService {
     public List<Chart> getChar() throws Exception {
         Connection conn = DruidFactory.getConnection();
         Statement statement = conn.createStatement();
-        String sql ="SELECT date,sum(score) FROM study GROUP BY date ORDER BY date ";
+        String sql ="SELECT date,sum(score),username FROM study GROUP BY date,username ORDER BY date ";
         List<Chart>l=new ArrayList<>();
         ResultSet resultSet = statement.executeQuery(sql);
         while(resultSet.next()){
             String date = resultSet.getString(1);
             int score = resultSet.getInt(2);
-            l.add(new Chart(date,score));
+            String username = resultSet.getString(3);
+            l.add(new Chart(date,score,username));
         }
         statement.close();
         conn.close();
@@ -261,7 +279,8 @@ public class StudyService {
             Integer score = resultSet.getInt(3);
             String name = resultSet.getString(4);
             String finish = resultSet.getString(5);
-            Study study = new Study(date,score,id,name,finish);
+            String username = resultSet.getString(6);
+            Study study = new Study(date,score,id,name,finish,username);
             list.add(study);
         }
         statement.close();

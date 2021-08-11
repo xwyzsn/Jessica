@@ -1,6 +1,7 @@
 package jessca.study;
 
 
+import jessca.study.common.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -22,10 +23,10 @@ public class StudyController {
     }
 
 
-    @GetMapping()
-    public List<Study> getStudy() throws Exception {
+    @GetMapping("{username}")
+    public List<Study> getStudy(@PathVariable("username") String username) throws Exception {
 
-        return studyService.getStudy();
+        return studyService.getStudy(username);
     }
     @PostMapping(path = "score")
     public  void postToDb(@RequestBody Study study) throws Exception {
@@ -88,6 +89,10 @@ public class StudyController {
     public void updateGiftStatus(@RequestParam(value="id") Integer id,
                                  @RequestParam(value="finish") String finish) throws Exception {
         studyService.updateGiftStatus(id,finish);
+    }
+    @GetMapping("/user")
+    public String getUser(){
+        return "OK";
     }
 
 }

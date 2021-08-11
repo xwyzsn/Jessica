@@ -1,31 +1,17 @@
 package jessca.study;
 
+import lombok.Data;
+
+@Data
 public class Chart {
     String date ;
     int score;
+    String username;
 
-    @Override
-    public String toString() {
-        return "Chart{" +
-                "date='" + date + '\'' +
-                ", score=" + score +
-                '}';
-    }
-
-    public String getDate() {
-        return date;
-    }
-
-    public void setDate(String date) {
+    public Chart(String date, int score, String username) {
         this.date = date;
-    }
-
-    public int getScore() {
-        return score;
-    }
-
-    public void setScore(int score) {
         this.score = score;
+        this.username = username;
     }
 
     public Chart() {
