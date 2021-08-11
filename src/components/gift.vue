@@ -19,7 +19,7 @@
         </q-img>
         <q-radio label="hotpot" val="2" v-model="radio"></q-radio>
       </div>
-      <div class="col-3 q-ma-sm">
+      <div class="col-3 q-mt-md">
         <q-img src="https://gitee.com/xwyzsn/Picture/raw/master/train.jpg">
           <q-tooltip           transition-show="flip-right"
                                transition-hide="flip-left"
@@ -48,9 +48,24 @@
         <q-radio label="ice-cream" val="5" v-model="radio"></q-radio>
       </div>
     </div>
-    <div style="text-align: center">
+    <q-separator class="q-ma-md" />
+    <div class="row justify-center">
+      <div class="q-pa-md">
+        <q-input
+          v-model.number="num"
+          type="number"
+          filled
+          style="max-width: 200px"
+          hint="自由兑换区"
+          label="输入消耗的积分数"
+        />
+      </div>
+    </div>
+
+    <div  class="row justify-center" >
 <!--      function: confirm-->
-      <q-btn color="primary" @click="confirm">确认</q-btn>
+      <q-btn color="primary " class="q-ma-lg" @click="confirm">确认</q-btn>
+      <q-btn class="q-ma-lg "  color="white" @click="reset" text-color="black" >重置</q-btn>
     </div>
 
   </div>
@@ -58,8 +73,6 @@
 </template>
 
 <script>
-import axios from 'axios';
-
 export default {
   name: "gift",
 
@@ -67,46 +80,63 @@ export default {
     return{
       radio: '0',
       total:[],
-      api_url:process.env.API_URL
+      api_url:process.env.API_URL,
+      num:undefined
     }
   },
   methods:{
+    reset(){
+      this.radio= '0';
+      this.num=undefined
+    },
     confirm(){
       //120.77.174.209
 
 
     const getData = async ()=>{
-      await    fetch(this.api_url+"/api/study/chart").then(res=>res.json()).then(data=>this.total=data)
+      this.$axios(this.api_url+"/api/study/chart").then(res=>this.total=res.data)
 
-      console.log(this.total)
       var len = this.total.length;
       var sum = 0;
+      var name=null;
       for(var i=0;i<len;i++){
+        if(this.total[i]["username"]===localStorage.getItem('username'))
         sum+=this.total[i]["score"];
       }
+
       var m = 0
-      if(this.radio=="0"){
+      if(this.radio==="0" && this.num===undefined && this.num<=0){
         this.$q.notify({message:'啥都没选!',position:"center"})
       }
-      else if (this.radio=="1" && sum>=10){
+      else if (this.radio==="1" && sum>=10){
         this.$q.notify({message:"成功兑换一杯奶茶!"+new Date(),position:"center"})
         m=-10;
+        name="奶茶"
       }
-      else if(this.radio=="2" &&sum>=50){
+      else if(this.radio==="2" &&sum>=50){
         this.$q.notify({message:"成功兑换一次火锅"+new Date(),position:"center"})
         m=-50;
+        name="火锅"
       }
-      else if(this.radio=="3" &&sum>=100){
+      else if(this.radio==="3" &&sum>=100){
         this.$q.notify({message:"成功兑换一次meeting"+new Date(),position:"center"})
         m=-100;
+        name="meeting"
       }
-      else if(this.radio=="4" &&sum>=150){
+      else if(this.radio==="4" &&sum>=150){
         this.$q.notify({message:"成功兑换一次心愿"+new Date(),position:"center"})
         m=-150;
+        name="wish"
       }
-      else if(this.radio=="5"&&sum>=5){
+      else if(this.radio==="5"&&sum>=5){
         this.$q.notify({message:"成功兑换一次冰淇淋"+new Date(),position:"center"})
         m=-5
+        name="冰淇淋"
+      }
+      else if(this.num&&this.num>=0 && sum>=this.num){
+        this.$q.notify({message:"成功兑换消耗积分"+this.num+new Date(),position:"center"})
+        m=-1*this.num;
+        name = m+"积分"
       }
       else{
         this.$q.notify({message:"积分不够继续努力~",position:"center"})
@@ -123,100 +153,25 @@ export default {
         d="0"+d
       }
       var str = y+"-"+mon+"-"+d;
-      var formdata = this.$qs.stringify({ date: str, score: m });
-      axios({
-        url: this.api_url+"/api/study",
-        method: "post",
-        data: formdata,
-        headers: {
-          "Content-Type": "application/x-www-form-urlencoded",
-        },
-      });
+      this.$axios.post(this.api_url+"/api/study/score",{date:str,score:m,name:name,username:localStorage.getItem('username')})
+
+      .catch(err=>{
+        console.log(err)})
+
+
     }
 
       getData()
-      //fetch( this.api_url+"/api/study/chart").then(res=>res.json()).then(data=>this.total=data)
 
-      // console.log(this.total)
-      // var len = this.total.length;
-      // var sum = 0;
-      // for(var i=0;i<len;i++){
-      //   sum+=this.total[i]["score"];
-      // }
-      // var m = 0
-      // console.log("sum"+sum)
-      // console.log(this.radio)
-      // if(this.radio=="0"){
-      //   this.$q.notify({message:'啥都没选!',position:"center"})
-      // }
-      // else if (this.radio=="1" && sum>=10){
-      //   this.$q.notify({message:"成功兑换一杯奶茶!"+new Date(),position:"center"})
-      //   m=-10;
-      // }
-      // else if(this.radio=="2" &&sum>=50){
-      //   this.$q.notify({message:"成功兑换一次火锅"+new Date(),position:"center"})
-      //   m=-50;
-      // }
-      // else if(this.radio=="3" &&sum>=100){
-      //   this.$q.notify({message:"成功兑换一次meeting"+new Date(),position:"center"})
-      //   m=-100;
-      // }
-      // else if(this.radio=="4" &&sum>=150){
-      //   this.$q.notify({message:"成功兑换一次心愿"+new Date(),position:"center"})
-      //   m=-150;
-      // }
-      // else{
-      //   this.$q.notify({message:"积分不够继续努力~",position:"center"})
-      // }
-      // var DATE = new Date();
-      // var d = DATE.getDate();
-      // var mon = DATE.getMonth()+1;
-      // var y = DATE.getFullYear();
-      // var str = y+"-"+mon+"-"+d;
-      // var formdata = this.$qs.stringify({ date: str, score: m });
-      // axios.post(url=this.api_url+"/api/study",data=formdata,headers={'Content-Type':'application/x-www-form-urlencoded'})
-      // axios({
-      //   url:api_url+"/api/study",
-      //   method:'post',
-      //   data:formdata,
-      //   headers:{
-      //     'Content-Type':'application/x-www-form-urlencoded'
-      //   }
-      // })
     }
 
   },
   mounted(){
-    fetch( this.api_url+"/api/study/chart").then(res=>res.json()).then(data=>this.total=data);
+    this.$axios( this.api_url+"/api/study/chart").then(res=>this.total = res.data)
   }
 }
 </script>
 
 <style >
-.el-row {
-  line-height: 10px;
-  margin-bottom: 20px;
 
-
-}
-.el-col {
-  border-radius: 4px;
-}
-.bg-purple-dark {
-  background: #99a9bf;
-}
-.bg-purple {
-  background: #d3dce6;
-}
-.bg-purple-light {
-  background: #e5e9f2;
-}
-.grid-content {
-  border-radius: 4px;
-  min-height: 36px;
-}
-.row-bg {
-  padding: 10px 0;
-  background-color: #f9fafc;
-}
 </style>

@@ -8,8 +8,8 @@
 </template>
 
 <script>
-import {Line} from '@antv/g2plot'
-import axios from "axios";
+import {Bar} from '@antv/g2plot'
+
 export default {
 
   data () {
@@ -19,17 +19,43 @@ export default {
     }
   },
   mounted(){
-    axios.get(
-      this.api_url+"/api/study/chart2"
+    this.$axios.get(
+      this.api_url+"/api/study/chart"
     ).then((res)=>{
-      var data =res.data
-      const linePlot =new Line('container',{
-        data,
-        xField:'date',
-        yField:'score',
+      let temp = this.group(res.data,'username');
+      var data=[];
+      Object.keys(temp).forEach((key)=>{
+        let sum=0;
+         temp[key].forEach((v)=>{
+           sum+=v.score;
+         })
+        data.push({name:key.toString(),value:sum})
+
       })
-      linePlot.render();
+
+      const bar =new Bar('container',{
+        data,
+        xField:'value',
+        yField:'name',
+        seriesField:'name',
+        minBarWidth: 40,
+        maxBarWidth: 40,
+      })
+      bar.render();
     })
+
+  },
+  methods:{
+    group (arr, key) {
+      let prop;
+      return arr.reduce(function(rv, x) {
+        prop = x[key];
+        delete x[key];
+        (rv[prop] = (rv[prop] || [])).push(x);
+        return rv;
+      }, {});
+
+    }
 
   }
 }

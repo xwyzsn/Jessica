@@ -2,152 +2,207 @@
   <div >
     <br>
 
-    <q-dialog persistent content-style="{ color: '#409EFF' }"
-                v-model="dialog"  v-if="dialog">
-      <div>
-        <q-card>
-          <q-card-section>
-        <q-form @submit="confirm">
-        <q-input label="输入身份" v-model="form.name" class="q-ma-md"></q-input>
-        <q-btn type="submit" color="primary" label="确认"></q-btn>
-        </q-form>
-          </q-card-section>
-          </q-card>
-      </div>
-    </q-dialog>
+<!--    <q-dialog persistent content-style="{ color: '#409EFF' }"-->
+<!--                v-model="dialog"  v-if="dialog">-->
+<!--      <div>-->
+<!--        <q-card>-->
+<!--          <q-card-section>-->
+<!--        <q-form @submit="confirm">-->
+<!--        <q-input label="输入身份" v-model="form.name" class="q-ma-md"></q-input>-->
+<!--        <q-btn type="submit" color="primary" label="确认"></q-btn>-->
+<!--        </q-form>-->
+<!--          </q-card-section>-->
+<!--          </q-card>-->
+<!--      </div>-->
+<!--    </q-dialog>-->
 
 
-    <div class="row">
+    <div class="row justify-center">
 <!--      bind to num function is insert-->
     <q-input v-model="num" mask="###" label="输入今日的单词数目" class="q-ml-md"></q-input>
     <q-btn @click="insert" color="primary"  class="q-ml-md" label="确认"></q-btn>
     </div>
     <q-separator />
-    <div class="row">
+
+    <div class="row justify-center">
+      <h6>本月曲线</h6>
+      <div class="q-ma-md" style="max-width:80%;width:100%" id="container-month" >
+      </div>
+    </div>
+    <div class="row justify-center">
+      <h6>月度曲线</h6>
+      <div class="q-ma-md" style="max-width:80%;width:100%" id="container-each-month" >
+      </div>
+    </div>
+    <div class="row justify-center">
+      <h6>总计曲线</h6>
+      <div class="q-ma-md" style="max-width:80%;width:100%" id="container2" >
+      </div>
+    </div>
+    <div class="row justify-center">
       <h6>每日曲线</h6>
       <div class="q-ma-md" style="max-width:80%;width:100%" id="container" >
 
       </div>
     </div>
-
-    <div class="row">
-      <h6>总计曲线</h6>
-      <div class="q-ma-md" style="max-width:80%;width:100%" id="container2" >
-      </div>
-    </div>
-
-
-    <!--    <el-row>-->
-    <!--      <h6>每日曲线</h6>-->
-    <!--    <div style="margin-top:2%" id="container" >-->
-    <!--    </div>-->
-    <!--    </el-row>-->
-    <!--    <el-row>-->
-    <!--      <h6>总单词数</h6>-->
-    <!--      <div id="container2">-->
-
-    <!--      </div>-->
-    <!--    </el-row>-->
   </div>
 </template>
 
 <script>
 import axios from "axios";
-import {Line} from '@antv/g2plot'
-import {Column} from "@antv/g2plot"
+import {Column, Line} from '@antv/g2plot'
+import {date} from 'quasar'
+
 export default {
 
-
+  inject:['reload']
+  ,
   methods:{
     insert(){
-      var nameInfo = window.localStorage.getItem('name');
-      axios.post(this.api_url+'/api/study/wordpost',{name:nameInfo,number:this.num,date:this.date});
-      this.$q.notify({message:"successfully! you can reload the page to see the graph!",position:"center"});
+      let nameInfo = localStorage.getItem('username');
+      this.$axios.post(this.api_url+'/api/study/wordpost',{name:nameInfo,number:this.num,date:this.date})
+      .then(()=>{
+        this.$q.notify({message:"successfully! you can reload the page to see the graph!",position:"center"});
+        this.reload()
+      }).catch(e=>{console.log(e)})
       //TODO: 还没部署到网站上,reload刷新页面
-      this.reload()
     },
-    cancel(){
-      this.dialog=false;
-    },
-    confirm(){
+     sum(arr) {
+  return arr.reduce(function(acr, cur){
+    return acr + cur;
+  });
+  },
 
-      window.localStorage.setItem('name',this.form.name);
-      this.dialog=false;
-    }
+
 
   },
   data(){
     return{
       date:'',
       num:null,
-      dialog:false,
+      // dialog:false,
       form:[
         {name:''},
       ],
       draw_data:'',
-      api_url:process.env.API_URL
+      api_url:process.env.API_URL,
+      toMonth:[],
+      pastMonth:[]
     }
   },
+  created() {
+    this.d=date
+  },
   mounted() {
-    if(window.localStorage.getItem('name')){
-      window.localStorage.getItem('name');
+    this.form.name = localStorage.getItem('username');
+    let date = new Date();
+    let year = date.getFullYear();
+    let month = date.getMonth() + 1;
+    let day = date.getDate();
+    if (month < 10) {
+      month = "0" + month
     }
-    else{
-      this.dialog=true;
+    if (day < 10) {
+      day = "0" + day
     }
-    var date=new Date();
-    var year = date.getFullYear();
-    var month = date.getMonth()+1;
-    var day = date.getDate();
-    if(month<10){
-      month="0"+month
-    }
-    if(day<10){
-      day="0"+day
-    }
-    this.date=year+"-"+month+"-"+day;
+    this.date = year + "-" + month + "-" + day;
 
-    axios.get(this.api_url+"/api/study/word")
-      .then(res=>{
-        var data = res.data
-        const line = new Line('container',{
-          data,
-          xField:'date',
-          yField:'number',
-          seriesField:'name',
-          autoFit:true
+    this.$axios.get(this.api_url + "/api/study/word")
+      .then(res => {
+        let data = res.data;
 
-        })
+        const line = new Line('container', {
+            data,
+            xField: 'date',
+            yField: 'number',
+            seriesField: 'name',
+            autoFit: true
+
+          }
+        )
+        let t = Date.now()
+        let toMon = this.d.formatDate(t, 'YYYY-MM')
+
+        for (var i = 0; i < res.data.length; i++) {
+          var tmp = this.d.formatDate(this.d.extractDate(data[i]["date"], 'YYYY-MM-DD'), 'YYYY-MM')
+          if (tmp === toMon) {
+            this.toMonth.push(data[i])
+          }
+          else if(tmp<toMon){
+            // console.log({name:data[i]["name"],number:data[i]["number"]})
+              this.pastMonth.push({name:data[i]["name"],number:data[i]["number"],month:tmp})
+          }
+        }
+        const groupBy = (list, k,value,v2) =>
+          list.reduce((result, item) => {
+            result[item[k]] = [...(result[item[k]] || []),{ number:item[value],month:item[v2]}]
+            return result
+          }, {})
+
+
+        // console.log(this.pastMonth)
+        data = this.toMonth
+
+        const line2 = new Line('container-month', {
+            data,
+            xField: 'date',
+            yField: 'number',
+            seriesField: 'name',
+            autoFit: true
+          }
+        )
+
+        data=[]
+        this.pastMonth = groupBy(this.pastMonth,'month','number','name')
+        for(var i in this.pastMonth){
+          const group = (list, k,value) =>
+            list.reduce((result, item) => {
+              result[item[k]] = [...(result[item[k]] || []),item[value]]
+              return result
+            }, {})
+
+          var temp = group(this.pastMonth[i],'month','number')
+          for(var n in  temp){
+            var tt = this.sum(temp[n])
+            data.push({month:i,sum:tt,name:n})
+          }
+
+        }
+        const line3 = new Line('container-each-month', {
+            data,
+            xField: 'month',
+            yField: 'sum',
+            seriesField: 'name',
+            autoFit: true
+          }
+        )
+
         line.render();
-
+        line2.render()
+        line3.render()
       });
-    axios.get(this.api_url+"/api/study/wordtotal")
-      .then(res=>{
-        var data = res.data
-        const column = new Column('container2',{
+    axios.get(this.api_url + "/api/study/wordtotal")
+      .then(res => {
+        const data = res.data;
+        const column = new Column('container2', {
           data,
-          xField:'name',
-          yField:'total',
+          xField: 'name',
+          yField: 'total',
 
-          autoFit:true,
-          maxColumnWidth:80,
-          color:"#409EFF",
+          autoFit: true,
+          maxColumnWidth: 80,
+          color: "#409EFF",
 
         })
         column.render();
       })
 
 
-  }
+  },
+
 
 }
 </script>
 
 <style scoped>
-.button{
-
-  /*margin-top: 50%;*/
-  /*margin-bottom: 5px;*/
-  /*margin-left: 5%;*/
-}
 </style>

@@ -122,13 +122,17 @@ export default {
     ,
 
     finish(){
+      this.$q.loading.show({message:'正在上传图片<br/>请稍等!'})
       this.$nextTick(() => {
-        const UPLOAD = async ()=>{ await this.$refs.uploader.upload ()
-        this.$q.notify({message:'上传成功！',position:'center'})
+        const UPLOAD = async ()=>{
+          await this.$refs.uploader.upload ()
+
         }
+
         UPLOAD()
       // this.$q.notify({message:'上传成功！',position:'center'})
       })
+      this.$q.loading.hide()
     }
 
   }

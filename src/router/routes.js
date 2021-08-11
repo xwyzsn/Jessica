@@ -1,9 +1,16 @@
 
 const routes = [
+
   {
     path: '/',
+    name:'login',
+    component:()=>import('pages/login.vue')
+  },
+  {
+    path: '/main',
     component: () => import('layouts/MainLayout.vue'),
     redirect:'/indexShow',
+    name:'main',
     children: [
       { path: '/indexShow', component: () => import('components/indexShow.vue') },
       {path: '/learning',component:()=>import('components/learning.vue')},
@@ -14,7 +21,6 @@ const routes = [
       {path:'/g-list',component:()=>import('components/giftchange.vue')}
     ]
   },
-
   // Always leave this as last one,
   // but you can also remove it
   {

@@ -7,6 +7,7 @@
         <q-toolbar-title style="margin-left:8%;">
           JESSICA'S PRIVATE ZONE
         </q-toolbar-title>
+        <q-btn icon="logout"  size="sm" flat @click="logout"></q-btn>
       </q-toolbar>
     </q-header>
 
@@ -107,6 +108,12 @@ export default {
     this.outlinedEdit=outlinedEdit
     this.outlinedTimeline=outlinedTimeline
     this.mdiHistory=mdiHistory
+  },
+  methods:{
+    logout(){
+      localStorage.clear();
+      this.$router.push({name:'login'})
+    }
   }
 }
 </script>

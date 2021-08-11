@@ -55,6 +55,12 @@
       </div>
     </q-form>
     <q-separator />
+
+    <div class="q-mt-md" style=" width: 100%;">
+      <canlendar />
+    </div>
+
+    <q-separator />
     <p style="text-align: center;" class="q-mt-sm"><strong>待办事项</strong></p>
     <div>
       <div class="row q-mt-md" v-for="(num,index) in this.todo.length" :key="index" v-bind="todo">
@@ -77,11 +83,16 @@
   </div>
 </template>
 <script>
-import axios from "axios";
+import canlendar from "components/canlendar";
 export default {
   inject:['reload'],
+  components: {
+    canlendar
+  }
+,
   data() {
     return {
+      login_user:undefined,
       textarea: "",
       todo: [],
       test: [],
@@ -105,29 +116,29 @@ export default {
       }
 
       else {
-        axios
+        this.$axios
           .post(this.api_url+"/api/study/todo", {
             date: this.value1,
             text: this.textarea,
           })
-          .then((res) => {
-            console.log(res);
-          });
-        this.reload()
-        this.$q.notify({message:"add successfully! refresh the page to check!",position:"center"});
-      }
+          .then(() => {
+            this.reload()
+            this.$q.notify({message:"add successfully! refresh the page to check!",position:"center"});
+
+          }).catch(e=>console.log(e));
+          }
     },
     finish(index) {
       var key = this.todo[index]["id"];
-      axios
+      this.$axios
         .delete(this.api_url+"/api/study/todo/" + key)
-        .then((res) => console.log(res));
-      this.$q.notify({message:"GOOD JOB !",position:"center"});
-      this.reload()
+        .then(() => {      this.$q.notify({message:"GOOD JOB !",position:"center"});
+          this.reload()});
+
     },
     open() {
-      axios
-        .get(this.api_url+"/api/study")
+      this.$axios
+        .get(this.api_url+"/api/study/"+this.login_user)
         .then((res) => (this.test = res.data));
       var len = this.test.length;
       var sum = 0;
@@ -156,28 +167,20 @@ export default {
       var str = year + "-" + month + "-" + day;
       var formdata = this.$qs.stringify({ date: str, score: this.num });
 
-      axios({
-        url: this.api_url+"/api/study",
+      this.$axios({
+        url: this.api_url+"/api/study/score",
         method: "post",
-        data: formdata,
-        headers: {
-          "Content-Type": "application/x-www-form-urlencoded",
-        },
-      });
-      this.reload()
+        data:{date:str,score:this.num,gift_name:null,gift_finish:null,username:localStorage.getItem('username')}
+      }).then(()=>{this.reload()}).catch(e=>console.log(e))
 
-      // axios
-      //   .post("http://120.77.174.209:8888/api/study", this.$qs.stringify({ date: str, score: this.num }),{headers:{'content-type':'application/x-www-form-urlencoded'}})
-      //   .then((res) => {
-      //     console.log(res);
-      //   });
+
       this.$q.notify({message:
         "sucess to post data to Database you can check it maybe 10 seconds after!"
       ,position:"center"});
     },
   },
   mounted() {
-
+    this.login_user = localStorage.getItem('username');
     function compare(a,b){
       if(a.date>=b.date){
         return 1;
@@ -189,15 +192,15 @@ export default {
     }
 
 
-    axios
+    this.$axios
       .get(this.api_url+"/api/study/todolist")
       .then((res2) => {
 
         this.todo = res2.data
         this.todo=this.todo.sort(compare)})
       .catch((e) => console.log(e));
-    axios
-      .get(this.api_url+"/api/study")
+    this.$axios
+      .get(this.api_url+"/api/study/"+this.login_user)
       .then((res) => (this.test = res.data));
 
     var date = new Date();
@@ -217,58 +220,6 @@ export default {
 };
 </script>
 <style>
-.el-row {
-  margin-bottom: 20px;
-}
-.el-col {
-  border-radius: 4px;
-}
-.bg-purple-dark {
-  background: #99a9bf;
-}
-.bg-purple {
-  background: #d3dce6;
-}
-.bg-purple-light {
-  background: #e5e9f2;
-}
-.grid-content {
-  border-radius: 4px;
-  min-height: 36px;
-}
-.row-bg {
-  padding: 10px 0;
-  background-color: #f9fafc;
-}
-.time {
-  font-size: 13px;
-  color: #999;
-}
-
-.bottom {
-  margin-top: 13px;
-  line-height: 12px;
-}
-
-.button {
-  padding: 0;
-  float: right;
-}
-
-.image {
-  width: 100%;
-  display: block;
-}
-
-.clearfix:before,
-.clearfix:after {
-  display: table;
-  content: "";
-}
-
-.clearfix:after {
-  clear: both;
-}
 .input-text {
   width: 100%;
   height: 50px;

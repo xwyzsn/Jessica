@@ -3,9 +3,17 @@ import VueRouter from 'vue-router'
 import qs from 'qs'
 import routes from './routes'
 import {VueJsonp} from 'vue-jsonp'
+import axios from "axios";
 Vue.use(VueJsonp)
 Vue.use(VueRouter)
 Vue.prototype.$qs = qs
+axios.interceptors.request.use(config=>{
+  if (localStorage.getItem('auth')){
+    config.headers.Authorization=localStorage.getItem('auth')
+  }
+  return config
+})
+Vue.prototype.$axios = axios
 /*
  * If not building with SSR mode, you can
  * directly export the Router instantiation;
@@ -25,6 +33,20 @@ export default function (/* { store, ssrContext } */) {
     // quasar.conf.js -> build -> publicPath
     mode: process.env.VUE_ROUTER_MODE,
     base: process.env.VUE_ROUTER_BASE
+  })
+
+  Router.beforeEach((to,from,next)=>{
+    let auth = localStorage.getItem('auth')
+    if(to.name !== 'login' && !auth ){
+      next({name:'login'})
+    }
+    else if (to.name ==='login' && auth){
+      next()
+    }
+    else {
+      next()
+    }
+
   })
 
   return Router

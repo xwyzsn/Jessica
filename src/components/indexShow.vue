@@ -81,7 +81,7 @@ export default {
       current: 1,
       total: null,
       numOfOnePage: 5,
-      baseurl: 'http://120.77.174.209:8080/pictures/',
+      baseurl: 'https://jessica.xwyzsn.site/',
       location:[],
       weather:[],
       iconbase:'https://gitee.com/xwyzsn/WeatherIcon/raw/master/weather-icon-S2/64/',

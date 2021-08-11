@@ -4,7 +4,7 @@
         <q-ajax-bar
       ref="bar"
       position="top"
-      color="accent"
+      color="red-2"
       size="10px"
     />
   </div>
