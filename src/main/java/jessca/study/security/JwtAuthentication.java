@@ -10,6 +10,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
+import javax.security.sasl.AuthenticationException;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -26,6 +27,9 @@ public class JwtAuthentication extends BasicAuthenticationFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
+      try {
+
+
         String jwt = request.getHeader(jwtUtils.getHeader());
         if(StrUtil.isBlankOrUndefined(jwt)){
             chain.doFilter(request,response);
@@ -33,14 +37,19 @@ public class JwtAuthentication extends BasicAuthenticationFilter {
         }
         Claims claims =jwtUtils.getClaimByToken(jwt);
         if (claims==null){
+//            chain.doFilter(request,response);
             throw  new JwtException("token 异常");
         }
         if (jwtUtils.isTokenExpired(claims)){
+//            chain.doFilter(request,response);
             throw new JwtException("token过期");
         }
         String name = claims.getSubject();
         UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(name,null,null);
         SecurityContextHolder.getContext().setAuthentication(token);
         chain.doFilter(request,response);
+      }catch (Exception e){
+          throw new AuthenticationException();
+      }
     }
 }
