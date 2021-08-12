@@ -50,11 +50,9 @@ export default function (/* { store, ssrContext } */) {
         headers:{
           Authorization:localStorage.getItem('auth')
         }
-
       })
         .then(res=>{
           if(res.data.code!==400){
-
             next()
           }
         }).catch(err=>{

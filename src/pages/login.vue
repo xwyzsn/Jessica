@@ -17,7 +17,6 @@
         lazy-rules
         :rules="[ val => val && val.length > 0 || '用户名不能为空']"
       />
-
       <q-input
         filled
         type="password"
@@ -28,14 +27,12 @@
           val => val !== null && val !== '' || '输入密码'
         ]"
       />
-
-
-      <div class="row justify-center q-ma-md">
-        <div class="col-3">
-        <q-btn label="登录" type="submit" color="primary"/>
+      <div class="full-width row wrap justify-center ">
+        <div class="col-auto q-ma-md ">
+        <q-btn    label="登录" type="submit" color="primary"/>
         </div>
-        <div class="col-3">
-        <q-btn label="重置" type="reset"     class="q-ml-sm" />
+        <div class="col-auto q-ma-md ">
+          <q-btn   label="重置" type="reset"/>
         </div>
         </div>
     </q-form>
