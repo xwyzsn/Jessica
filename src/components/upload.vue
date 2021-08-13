@@ -23,10 +23,13 @@
           label="可多选"
           multiple
           batch
+          :headers="[{name: 'Authorization', value:auth}]"
           field-name="file"
           style="max-width: 50%;margin-left:25%;"
           class="q-mt-lg"
           :form-fields="additionalData"
+          @start="showLoading"
+          @finish="removeLoading"
         />
 
       </q-step>
@@ -79,8 +82,13 @@ export default {
       date:'',
       url:'',
       api_url:process.env.API_URL,
+      auth:'',
+      timer:undefined
     }
   },
+  created() {
+    this.auth = localStorage.getItem('auth')
+    },
   mounted() {
 
     var tmpDate=new Date()
@@ -122,17 +130,23 @@ export default {
     ,
 
     finish(){
-      this.$q.loading.show({message:'正在上传图片<br/>请稍等!'})
-      this.$nextTick(() => {
-        const UPLOAD = async ()=>{
-          await this.$refs.uploader.upload ()
 
+        // this.$q.loading.show({message:'正在上传图片<br/>请稍等!'})
+        const UPLOAD =  ()=>{
+           this.$refs.uploader.upload ()
         }
-
         UPLOAD()
-      // this.$q.notify({message:'上传成功！',position:'center'})
+
+
+        // this.$q.loading.hide()
+    },
+    showLoading () {
+      this.$q.loading.show({
+        message: '<span>正在上传图片</span><br/><span class="text-orange text-weight-bold">请稍后...</span>'
       })
-      this.$q.loading.hide()
+    },
+    removeLoading(){
+      this.$q.loading.hide();
     }
 
   }

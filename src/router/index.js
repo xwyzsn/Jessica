@@ -43,7 +43,6 @@ export default function (/* { store, ssrContext } */) {
     }
     else if (to.name ==='login' && auth){
           next()
-          localStorage.clear();
     }
     else if(from.name ==='login' && auth){
       axios.get(process.env.API_URL+"/api/study/user",{

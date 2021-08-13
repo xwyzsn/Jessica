@@ -51,7 +51,8 @@ export default {
       password: null,
       pics:[],
       pic_url:[],
-      api_url:process.env.API_URL
+      api_url:process.env.API_URL,
+      pic:undefined
 
     }
   },
