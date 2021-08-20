@@ -7,13 +7,23 @@
       size="10px"
 
     />
-    <div class="date q-mt-md" style="height: 5%;">
+    <div v-if="location  && weather " class="date q-mt-md" style="height: 5%;">
+
       今天{{this.location['result'].ad_info.city}}天气{{this.weather["now"].text}}<q-img style="width: 5%;height: 100%" :src="this.iconbase+this.weather['now'].icon+'.png'" />,温度:{{this.weather["now"].temp}}
     {{this.sentence}},天气数据更新于{{this.weatherUpdateTime}}
     </div>
-        <span class="date q-ma-md">
-            Today is the {{DiffDays()}} day we had been together!
-        </span>
+    <q-separator  class="q-ma-md"  />
+    <div class="justify-center row text-h6 date" >
+      <q-icon :name="this.matAllInbox" size="lg"/>
+    </div>
+    <div class="row justify-center ">
+    <q-card class="q-ma-md bg-pink-2" v-for="(d,index) in this.days" :key="index">
+      <q-card-section>
+        {{d}}
+      </q-card-section>
+    </q-card>
+    </div>
+    <q-separator class="q-ma-md"/>
     <div class="row mobile-only " v-if="this.isloading==true" >
 
       <q-card v-for="i in this.numOfOnePage" :key="i" style="width: 80%;margin-left: 10%">
@@ -69,6 +79,7 @@
 
 <script>
 import axios from "axios";
+import { matFavoriteBorder } from '@quasar/extras/material-icons'
 export default {
   name: 'indexShow',
 
@@ -87,7 +98,9 @@ export default {
       iconbase:'https://gitee.com/xwyzsn/WeatherIcon/raw/master/weather-icon-S2/64/',
       sentence:'',
       weatherUpdateTime:'',
-      api_url:process.env.API_URL
+      api_url:process.env.API_URL,
+      days:[],
+      matAllInbox:undefined
     }
   },
   methods: {
@@ -118,14 +131,18 @@ export default {
       aDate = this.Time(this.date).split("/")
       oDate2 = new Date(aDate[1] + '/' + aDate[2] + '/' + aDate[0])
       iDays = parseInt(Math.abs(oDate1 - oDate2) / 1000 / 60 / 60 / 24)    //把相差的毫秒数转换为天数
-      return iDays
+      return iDays.toString().split("");
 
     }
 
 
   },
+  created() {
+    this.matAllInbox=matFavoriteBorder
+    },
   mounted() {
     //axios get picture wall information
+    this.days=this.DiffDays();
     function compare(a,b) {
       if ( a.uploadtime >= b.uploadtime ){
         return -1;

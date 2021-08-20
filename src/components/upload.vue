@@ -130,15 +130,11 @@ export default {
     ,
 
     finish(){
-
-        // this.$q.loading.show({message:'正在上传图片<br/>请稍等!'})
         const UPLOAD =  ()=>{
            this.$refs.uploader.upload ()
         }
         UPLOAD()
 
-
-        // this.$q.loading.hide()
     },
     showLoading () {
       this.$q.loading.show({
