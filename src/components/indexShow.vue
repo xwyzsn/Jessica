@@ -1,16 +1,9 @@
 <template>
   <div class="indexShow" >
-                <q-ajax-bar
-      ref="bar"
-      position="top"
-      color="accent"
-      size="10px"
+    <div v-if="location!==undefined&& weather!==undefined && location['result']!==undefined&&weather['now']!==undefined" class="date q-mt-md" style="height: 5%;">
 
-    />
-    <div v-if="location  && weather " class="date q-mt-md" style="height: 5%;">
-
-      今天{{this.location['result'].ad_info.city}}天气{{this.weather["now"].text}}<q-img style="width: 5%;height: 100%" :src="this.iconbase+this.weather['now'].icon+'.png'" />,温度:{{this.weather["now"].temp}}
-    {{this.sentence}},天气数据更新于{{this.weatherUpdateTime}}
+      今天{{location['result'].ad_info.city}}天气{{weather["now"].text}}<q-img style="width: 5%;height: 100%" :src="iconbase+weather['now'].icon+'.png'" />,温度:{{weather["now"].temp}}
+    {{sentence}},天气数据更新于{{weatherUpdateTime}}
     </div>
     <q-separator  class="q-ma-md"  />
     <div class="justify-center row text-h6 date" >
@@ -90,7 +83,7 @@ export default {
       isloading: true,
       slide: [],
       current: 1,
-      total: null,
+      total: 0,
       numOfOnePage: 5,
       baseurl: 'https://jessica.xwyzsn.site/',
       location:[],

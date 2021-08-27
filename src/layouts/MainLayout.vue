@@ -11,7 +11,7 @@
       </q-toolbar>
     </q-header>
 
-    <q-drawer show-if-above v-model="left" side="left" bordered width="150" >
+    <q-drawer show-if-above v-model="left" side="left" bordered :width="150" >
       <q-scroll-area class="fit" >
         <q-list padding class="menu-list">
           <q-item clickable v-ripple to="/indexshow">
