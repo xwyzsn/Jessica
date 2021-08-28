@@ -10,7 +10,7 @@
       <q-icon :name="this.matAllInbox" size="lg"/>
     </div>
     <div class="row justify-center ">
-    <q-card class="q-ma-md bg-pink-2" v-for="(d,index) in this.days" :key="index">
+    <q-card class="q-ma-md bg-pink-2 text-white" v-for="(d,index) in this.days" :key="index">
       <q-card-section>
         {{d}}
       </q-card-section>

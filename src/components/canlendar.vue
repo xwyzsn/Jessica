@@ -12,9 +12,10 @@
 <q-calendar
   v-model="selectedDate"
   view="month"
-
+  locale="zh-CN"
   :day-height="100"
   ref="calendar"
+  month-label-size="sm"
   :interval-height="100"
 >
   <template #day="{ timestamp }">
@@ -136,16 +137,16 @@ export default {
           for (var i = 0; i < array.length; i++) {
             let dayDiff = date.getDateDiff(array[i]['date'], today)
             if (dayDiff <= 3&&dayDiff>=0) {
-              this.eve[i] = {title: array[i]["text"], date: array[i]['date'], bgcolor: 'red'}
+              this.eve[i] = {title: array[i]["content"], date: array[i]['limittime'], bgcolor: 'red'}
             } else if (dayDiff > 3 && dayDiff < 7) {
-              this.eve[i] = {title: array[i]["text"], date: array[i]['date'], bgcolor: 'orange'}
+              this.eve[i] = {title: array[i]["content"], date: array[i]['limittime'], bgcolor: 'orange'}
 
             }
             else if(dayDiff<0){
-              this.eve[i] = {title: array[i]["text"], date: array[i]['date'], bgcolor: 'grey'}
+              this.eve[i] = {title: array[i]["content"], date: array[i]['limittime'], bgcolor: 'grey'}
             }
             else{
-              this.eve[i] = {title: array[i]["text"], date: array[i]['date'], bgcolor: 'blue'}
+              this.eve[i] = {title: array[i]["content"], date: array[i]['limittime'], bgcolor: 'blue'}
             }
           }
           this.events=this.eve

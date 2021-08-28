@@ -66,13 +66,22 @@ export default {
         data:form,
         url:this.api_url+"/login"
       }).then(res=>{
+
         if (res.data.code===400){
           this.$q.notify({message:'用户名或密码错误',icon: 'error',position:"center"})
         }
         else {
         localStorage.setItem('auth',res.headers.authorization.toString())
-        localStorage.setItem('username',this.name)
-        this.$router.push({name:'main'})
+        localStorage.setItem('username',this.name);
+        const that = this;
+          axios({
+            method:"get",
+            url:this.api_url+"/api/study/user/"+this.name
+          }).then((data)=>{
+            localStorage.setItem('email',data.data.email)
+            localStorage.setItem('userId',data.data.id)
+            that.$router.push({name:'main'})
+          })
         }
       })
 
@@ -100,7 +109,7 @@ export default {
         }
       })
       .then(res=>{
-        if(res.data === "OK"){
+        if(res.data !== undefined){
           this.$router.push({name:'main'})
         }
         else{

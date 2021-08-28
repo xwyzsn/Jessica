@@ -66,12 +66,12 @@
       <div class="row q-mt-md" v-for="(num,index) in this.todo.length" :key="index" v-bind="todo">
         <q-card :v-bind="todo" style="width: 70%;margin-left: 15%">
           <q-card-section>
-            截 止 日 期:    {{ todo[index]["date"] }}
+            截 止 日 期:    {{ todo[index]["limittime"] }}
             <q-btn    flat color="primary" @click.prevent="finish(index)">finish</q-btn>
           </q-card-section>
           <q-card-section>
             <p style="text-align: center">
-              {{todo[index]['text']}}
+              {{todo[index]['content']}}
             </p>
           </q-card-section>
 
@@ -109,8 +109,8 @@ export default {
       if (
         this.textarea == null ||
         this.value1 == null ||
-        this.textarea == "" ||
-        this.value1 == ""
+        this.textarea === "" ||
+        this.value1 === ""
       ) {
         this.$q.notify({message:"please! check your input infomation!",position:"center"});
       }
@@ -118,8 +118,9 @@ export default {
       else {
         this.$axios
           .post(this.api_url+"/api/study/todo", {
-            date: this.value1,
-            text: this.textarea,
+            content: this.textarea,
+            limittime: this.value1,
+            userid:localStorage.getItem('userId')
           })
           .then(() => {
             this.reload()
@@ -197,6 +198,7 @@ export default {
       .then((res2) => {
 
         this.todo = res2.data
+        console.log(this.todo)
         this.todo=this.todo.sort(compare)})
       .catch((e) => console.log(e));
     this.$axios
