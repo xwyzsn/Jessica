@@ -1,4 +1,4 @@
-package jessca.study;
+package jessca.study.entity;
 
 import java.util.Arrays;
 

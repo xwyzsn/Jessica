@@ -1,20 +1,31 @@
-package jessca.study;
+package jessca.study.service;
 
-import com.alibaba.druid.sql.visitor.functions.Char;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import jessca.study.Configure.DruidFactory;
+import jessca.study.Utils.DateUtils;
+import jessca.study.entity.*;
+import jessca.study.mapper.TodoMapper;
+import jessca.study.mapper.UserMapper;
+import jessca.study.service.MailService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import jessca.study.entity.Study;
+import jessca.study.entity.ToDo;
+import jessca.study.entity.Word;
 
-import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 @Service
 public class StudyService {
+
+
+
 
     public StudyService() throws Exception {
     }
@@ -83,7 +94,8 @@ public class StudyService {
     public List<ToDo> getTodo() throws Exception {
         Connection conn = DruidFactory.getConnection();
         Statement statement=conn.createStatement();
-        String sql = "select * from todo";
+        String sql = "select * from to_do";
+        System.out.println(sql);
         ResultSet resultSet =statement.executeQuery(sql);
         List<ToDo>list = new ArrayList<>();
         while(resultSet.next()){
@@ -101,7 +113,7 @@ public class StudyService {
     public void deleteTo( int itemId) throws Exception {
         Connection conn = DruidFactory.getConnection();
         Statement statement=conn.createStatement();
-        String sql ="delete  from todo where id = "+itemId;
+        String sql ="delete  from to_do where id = "+itemId;
         int f = statement.executeUpdate(sql);
         if(f!=0){
             System.out.println("delete success");
@@ -116,10 +128,16 @@ public class StudyService {
     public void addNewTodo(ToDo toDo) throws Exception {
         Connection conn = DruidFactory.getConnection();
         Statement statement = conn.createStatement();
-        String date = toDo.date;
-        String context=toDo.text;
-        String sql = "insert into todo(LimitTime,content) values("+"\""+date+"\" ,\""+context+"\")";
-        int f = statement.executeUpdate(sql);
+        String date = toDo.limittime;
+        String context=toDo.content;
+        Integer userid = toDo.userid;
+        String sql = "insert into to_do(LimitTime,content,userId) values(?,?,?)";
+        PreparedStatement preparedStatement = conn.prepareStatement(sql);
+        preparedStatement.setString(1,date);
+        preparedStatement.setString(2,context);
+        preparedStatement.setInt(3,userid);
+        int f = preparedStatement.executeUpdate();
+        System.out.println(sql);
         if(f!=0){
             System.out.println("success");
         }
@@ -231,7 +249,7 @@ public class StudyService {
         PreparedStatement preparedStatement = connection.prepareStatement(sql);
         for (MultipartFile multipartFile:file) {
             final byte[] bytes = multipartFile.getBytes();
-            final Path path = Paths.get("/home/jan/Desktop/picture/" + multipartFile.getOriginalFilename());
+            final Path path = Paths.get("C:\\Users\\zzh\\Pictures\\Camera Roll\\" + multipartFile.getOriginalFilename());
             Files.write(path, bytes);
             preparedStatement.setString(1, String.valueOf(multipartFile.getOriginalFilename()));
             preparedStatement.setString(2, String.valueOf(title));
@@ -296,5 +314,38 @@ public class StudyService {
         int f = statement.executeUpdate(sql);
         statement.close();
         connection.close();
+    }
+
+
+    @Autowired
+    private MailService mailService;
+    @Autowired
+    private TodoMapper todoMapper;
+    @Autowired
+    private DateUtils dateUtils;
+    @Autowired
+    private UserMapper userMapper;
+    public void sendMail() {
+        java.util.Date date = new Date();
+        String deadline = dateUtils.addDate(date,3);
+        String notifyLine = dateUtils.addDate(date,-3);
+        QueryWrapper<ToDo>queryWrapper =new QueryWrapper<>();
+        queryWrapper.and(i->i.lt("limittime",deadline).gt("limittime",notifyLine));
+        List<ToDo> toDoList = todoMapper.selectList(queryWrapper);
+        for(ToDo toDo:toDoList){
+
+            User user=userMapper.selectById(toDo.getUserid());
+            mailService.sendSimpleMail(user.getEmail(),toDo.getContent().toString()+"少于三天,请及时处理","代办事项提醒!");
+        }
+
+        System.out.println(toDoList);
+    }
+
+    public User getUser(String username) {
+
+        QueryWrapper<User> userQueryWrapper = new QueryWrapper<>();
+        userQueryWrapper.eq("name",username);
+        User user = userMapper.selectOne(userQueryWrapper);
+        return user;
     }
 }

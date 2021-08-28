@@ -1,15 +1,16 @@
-package jessca.study;
+package jessca.study.Controller;
 
 
-import jessca.study.common.Result;
+import jessca.study.entity.*;
+import jessca.study.service.StudyService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
-import java.nio.file.*;
+
 //http://120.77.174.209/
 @RestController
 @RequestMapping(path = "api/study" ,method = RequestMethod.GET,produces = {"application/json;charset=UTF-8"})
@@ -90,9 +91,15 @@ public class StudyController {
                                  @RequestParam(value="finish") String finish) throws Exception {
         studyService.updateGiftStatus(id,finish);
     }
-    @GetMapping("/user")
-    public String getUser(){
-        return "OK";
+    @GetMapping("/user/{username}")
+    public User getUser(@PathVariable("username") String username){
+        return studyService.getUser(username);
+    }
+
+    @Scheduled(cron = "0 0 8 * * *")
+    public void sendMail(){
+
+        studyService.sendMail();
     }
 
 }

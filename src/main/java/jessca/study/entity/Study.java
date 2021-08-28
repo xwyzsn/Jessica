@@ -1,15 +1,15 @@
-package jessca.study;
+package jessca.study.entity;
 
 import lombok.Data;
 
 @Data
 public class Study {
-    String date ;
-    int score;
-    int id ;
-    String name;
-    String gift_finish;
-    String username;
+    public String date ;
+    public int score;
+    public int id ;
+    public String name;
+    public String gift_finish;
+    public String username;
 
     public Study(String date, int score, int id, String name, String gift_finish) {
         this.date = date;

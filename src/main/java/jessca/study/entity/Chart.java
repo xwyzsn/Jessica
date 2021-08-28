@@ -1,4 +1,4 @@
-package jessca.study;
+package jessca.study.entity;
 
 import lombok.Data;
 

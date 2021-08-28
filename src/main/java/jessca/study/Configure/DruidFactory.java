@@ -1,4 +1,4 @@
-package jessca.study;
+package jessca.study.Configure;
 
 import java.sql.Connection;
 

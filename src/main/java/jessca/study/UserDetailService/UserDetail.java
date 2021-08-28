@@ -1,10 +1,8 @@
 package jessca.study.UserDetailService;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import jessca.study.DruidFactory;
 import jessca.study.entity.User;
 import jessca.study.mapper.UserMapper;
-import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
@@ -17,12 +15,9 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service("userDetailsService")
-
 public class UserDetail implements UserDetailsService {
-
     @Autowired
     private UserMapper userMapper;
-
     @Override
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
         QueryWrapper<User>wrapper = new QueryWrapper<>();
@@ -33,7 +28,6 @@ public class UserDetail implements UserDetailsService {
         }
         List<GrantedAuthority> auth = AuthorityUtils.commaSeparatedStringToAuthorityList("role");
         return new org.springframework.security.core.userdetails.User(user.getName(), new BCryptPasswordEncoder().encode(user.getPassword()),auth);
-
 
     }
 }

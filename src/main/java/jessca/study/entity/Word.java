@@ -1,9 +1,9 @@
-package jessca.study;
+package jessca.study.entity;
 
 public class Word {
-    String name;
-    int number;
-    String date;
+    public String name;
+    public int number;
+    public String date;
     @Override
     public String toString() {
         return "word{" +

@@ -1,4 +1,4 @@
-package jessca.study;
+package jessca.study.entity;
 
 public class TotalWord {
     String name;
