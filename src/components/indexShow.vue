@@ -6,18 +6,56 @@
     {{sentence}},天气数据更新于{{weatherUpdateTime}}
     </div>
     <q-separator  class="q-ma-md"  />
+    <transition
+    appear
+
+    appear-active-class="animated heartBeat"
+    >
     <div class="justify-center row text-h6 date" >
       <q-icon :name="this.matAllInbox" size="lg"/>
     </div>
-    <div class="row justify-center ">
+    </transition>
+    <div class="row justify-center"   v-touch-swipe.mouse.prevent.right.mouse="handlePan" >
+
+      <transition-group
+        appear
+      enter-active-class="animated bounceInUp"
+      leave-active-class="animated zoomOutLeft"
+      >
+      <div class="row" v-if="yearView" key="dateView">
     <q-card class="q-ma-md bg-pink-2 text-white" v-for="(d,index) in this.days" :key="index">
       <q-card-section>
         {{d}}
       </q-card-section>
     </q-card>
+      </div>
+      </transition-group>
+      <transition-group
+        appear
+        enter-active-class="animated bounceInUp"
+        leave-active-class="animated zoomOutLeft"
+      >
+      <div class="row" v-if="!yearView" key="yearView">
+
+        <q-card class="q-ma-md bg-pink-2 text-white text" v-for="(d,index) in yearDateView" :key="index">
+
+          <q-card-section v-if="index===0">
+            {{d}} 年
+          </q-card-section>
+          <q-card-section v-else-if="index===1">
+            {{d}} 月
+          </q-card-section>
+          <q-card-section v-else>
+            {{d}} 日
+          </q-card-section>
+        </q-card>
+      </div>
+      </transition-group>
+
     </div>
+
     <q-separator class="q-ma-md"/>
-    <div class="row mobile-only " v-if="this.isloading==true" >
+    <div class="row mobile-only " v-if="this.isloading===true" >
 
       <q-card v-for="i in this.numOfOnePage" :key="i" style="width: 80%;margin-left: 10%">
         <q-skeleton height="200px" square></q-skeleton>
@@ -73,6 +111,7 @@
 <script>
 import axios from "axios";
 import { matFavoriteBorder } from '@quasar/extras/material-icons'
+import {getDiff} from "src/Utils/utils";
 export default {
   name: 'indexShow',
 
@@ -93,40 +132,23 @@ export default {
       weatherUpdateTime:'',
       api_url:process.env.API_URL,
       days:[],
-      matAllInbox:undefined
+      matAllInbox:undefined,
+      info: null,
+      panning: false,
+      yearView:true,
+      yearDateView:[]
     }
   },
   methods: {
+    handlePan({ evt, ...info }){
+      this.info = info
 
-    Time() {
-      var date = new Date();
-      var seperator1 = "/";
-      var year = date.getFullYear();
-      var month = date.getMonth() + 1;
-      var strDate = date.getDate();
-
-      if (month >= 1 && month <= 9) {
-        month = "0" + month;
-      }
-      if (strDate >= 0 && strDate <= 9) {
-        strDate = "0" + strDate;
-      }
-      var currentdate = year + seperator1 + month + seperator1 + strDate;
-
-      return currentdate;
-
+      // native Javascript event
+      console.log(evt)
+      this.yearView=!this.yearView
+      console.log(this.yearView)
     },
-    DiffDays() {
-      var aDate, oDate1, oDate2, iDays
-      var sDate1 = "2015/08/28";
-      aDate = sDate1.split("/")
-      oDate1 = new Date(aDate[1] + '/' + aDate[2] + '/' + aDate[0])    //转换为12-18-2002格式
-      aDate = this.Time(this.date).split("/")
-      oDate2 = new Date(aDate[1] + '/' + aDate[2] + '/' + aDate[0])
-      iDays = parseInt(Math.abs(oDate1 - oDate2) / 1000 / 60 / 60 / 24)    //把相差的毫秒数转换为天数
-      return iDays.toString().split("");
 
-    }
 
 
   },
@@ -135,7 +157,9 @@ export default {
     },
   mounted() {
     //axios get picture wall information
-    this.days=this.DiffDays();
+    getDiff()
+    this.days=getDiff(new Date(2015,8,28),'day').toString().split("");
+    this.yearDateView=getDiff(new Date(2015,8,28),'year');
     function compare(a,b) {
       if ( a.uploadtime >= b.uploadtime ){
         return -1;
@@ -172,7 +196,7 @@ export default {
         this.weather=res2.data
         var temp = this.weather['now'].temp
         if(temp<=15){
-          this.sentence="今天有点冷，宝贝记得多穿点"
+          this.sentence="今天有点冷，记得多穿点"
         }
         else if(temp>15&&temp<22){
           this.sentence="今天温度刚刚好"
@@ -210,5 +234,8 @@ body{
   text-align: center;
   color: pink;
 
+}
+.animated{
+  --animate-duration: 2s;
 }
 </style>
