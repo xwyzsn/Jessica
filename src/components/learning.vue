@@ -84,6 +84,7 @@
 </template>
 <script>
 import canlendar from "components/canlendar";
+import {date} from "../Utils/utils"
 export default {
   inject:['reload'],
   components: {
@@ -130,7 +131,7 @@ export default {
           }
     },
     finish(index) {
-      var key = this.todo[index]["id"];
+      let key = this.todo[index]["id"];
       this.$axios
         .delete(this.api_url+"/api/study/todo/" + key)
         .then(() => {      this.$q.notify({message:"GOOD JOB !",position:"center"});
@@ -141,9 +142,9 @@ export default {
       this.$axios
         .get(this.api_url+"/api/study/"+this.login_user)
         .then((res) => (this.test = res.data));
-      var len = this.test.length;
-      var sum = 0;
-      for (var i = 0; i < len; i++) {
+      let len = this.test.length;
+      let sum = 0;
+      for (let i = 0; i < len; i++) {
         sum += this.test[i]["score"];
       }
 
@@ -155,23 +156,12 @@ export default {
       ,position:"center"});
     },
     addScore() {
-      var date = new Date();
-      var year = date.getFullYear();
-      var month = date.getMonth() + 1;
-      var day = date.getDate();
-      if(month<10){
-        month="0"+month
-      }
-      if(day<10){
-        day = "0" +day
-      }
-      var str = year + "-" + month + "-" + day;
-      var formdata = this.$qs.stringify({ date: str, score: this.num });
-
+      let now = new Date();
+      let formatDate = date.formatDate(now,"YYYY-MM-DD")
       this.$axios({
         url: this.api_url+"/api/study/score",
         method: "post",
-        data:{date:str,score:this.num,gift_name:null,gift_finish:null,username:localStorage.getItem('username')}
+        data:{date:formatDate,score:this.num,gift_name:null,gift_finish:null,username:localStorage.getItem('username')}
       }).then(()=>{this.reload()}).catch(e=>console.log(e))
 
 
@@ -182,15 +172,6 @@ export default {
   },
   mounted() {
     this.login_user = localStorage.getItem('username');
-    function compare(a,b){
-      if(a.date>=b.date){
-        return 1;
-      }
-      if(a.date<b.date){
-        return -1;
-      }
-      return 0;
-    }
 
 
     this.$axios
@@ -198,25 +179,16 @@ export default {
       .then((res2) => {
 
         this.todo = res2.data
-        console.log(this.todo)
-        this.todo=this.todo.sort(compare)})
+        this.todo=this.todo.sort((a,b)=>{return a.limittime>=b.limittime?-1:1})})
       .catch((e) => console.log(e));
     this.$axios
       .get(this.api_url+"/api/study/"+this.login_user)
       .then((res) => (this.test = res.data));
 
-    var date = new Date();
-    var year = date.getFullYear();
-    var month = date.getMonth() + 1;
-    var day = date.getDate();
-    if(month<10){
-      month="0"+month
-    }
-    if(day<10){
-      day="0"+day
-    }
-    const str = year + "-" + month + "-" + day;
-    this.value1=str
+    let today = new Date();
+    let todayDate = date.formatDate(today,"YYYY-MM-DD")
+
+    this.value1=todayDate
 
   },
 };

@@ -142,11 +142,8 @@ export default {
   methods: {
     handlePan({ evt, ...info }){
       this.info = info
-
       // native Javascript event
-      console.log(evt)
       this.yearView=!this.yearView
-      console.log(this.yearView)
     },
 
 
@@ -157,7 +154,6 @@ export default {
     },
   mounted() {
     //axios get picture wall information
-    getDiff()
     this.days=getDiff(new Date(2015,8,28),'day').toString().split("");
     this.yearDateView=getDiff(new Date(2015,8,28),'year');
     function compare(a,b) {
@@ -173,7 +169,7 @@ export default {
       await axios.get(this.api_url+'/api/study/picture').then(res => this.picture = res.data)
         .catch(err => console.log(err))
       this.isloading = !this.isloading;
-      this.picture=this.picture.sort(compare)
+      this.picture=this.picture.sort((a,b)=>{return a.uploadtime>=b.uploadtime?-1:1})
       for (let i = 0; i <= this.picture.length; i++) {
         this.slide.push(1)
       }

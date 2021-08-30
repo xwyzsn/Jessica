@@ -23,7 +23,7 @@ export default {
       this.api_url+"/api/study/chart"
     ).then((res)=>{
       let temp = this.group(res.data,'username');
-      var data=[];
+      let data=[];
       Object.keys(temp).forEach((key)=>{
         let sum=0;
          temp[key].forEach((v)=>{

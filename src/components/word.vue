@@ -51,7 +51,7 @@
 <script>
 import axios from "axios";
 import {Column, Line} from '@antv/g2plot'
-import {date} from 'quasar'
+import {date} from '../Utils/utils'
 
 export default {
 
@@ -95,17 +95,9 @@ export default {
   },
   mounted() {
     this.form.name = localStorage.getItem('username');
-    let date = new Date();
-    let year = date.getFullYear();
-    let month = date.getMonth() + 1;
-    let day = date.getDate();
-    if (month < 10) {
-      month = "0" + month
-    }
-    if (day < 10) {
-      day = "0" + day
-    }
-    this.date = year + "-" + month + "-" + day;
+    let now = new Date();
+
+    this.date = date.formatDate(now,"YYYY-MM-DD");
 
     this.$axios.get(this.api_url + "/api/study/word")
       .then(res => {
@@ -123,8 +115,8 @@ export default {
         let t = Date.now()
         let toMon = this.d.formatDate(t, 'YYYY-MM')
 
-        for (var i = 0; i < res.data.length; i++) {
-          var tmp = this.d.formatDate(this.d.extractDate(data[i]["date"], 'YYYY-MM-DD'), 'YYYY-MM')
+        for (let i = 0; i < res.data.length; i++) {
+          let tmp = this.d.formatDate(this.d.extractDate(data[i]["date"], 'YYYY-MM-DD'), 'YYYY-MM')
           if (tmp === toMon) {
             this.toMonth.push(data[i])
           }
@@ -154,16 +146,16 @@ export default {
 
         data=[]
         this.pastMonth = groupBy(this.pastMonth,'month','number','name')
-        for(var i in this.pastMonth){
+        for(let i in this.pastMonth){
           const group = (list, k,value) =>
             list.reduce((result, item) => {
               result[item[k]] = [...(result[item[k]] || []),item[value]]
               return result
             }, {})
 
-          var temp = group(this.pastMonth[i],'month','number')
-          for(var n in  temp){
-            var tt = this.sum(temp[n])
+          let temp = group(this.pastMonth[i],'month','number')
+          for(let n in  temp){
+            let tt = this.sum(temp[n])
             data.push({month:i,sum:tt,name:n})
           }
 
