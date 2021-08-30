@@ -87,10 +87,10 @@ export default {
   methods:{
     gift_finish(){
 
-      for(var i=0;i<this.not_finish.length;i++){
+      for(let i=0;i<this.not_finish.length;i++){
         // console.log(this.not_finish[i])
         if(this.not_finish[i]==true){
-          var formdata = new FormData()
+          let formdata = new FormData()
           formdata.append('id',this.g_list[i].id)
           formdata.append('finish',"t")
           this.$axios({

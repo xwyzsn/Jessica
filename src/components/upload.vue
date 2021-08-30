@@ -70,7 +70,7 @@
 </template>
 
 <script>
-
+import {date} from "../Utils/utils"
 export default {
   name: "upload",
 
@@ -92,24 +92,8 @@ export default {
   mounted() {
 
     var tmpDate=new Date()
-    var day = tmpDate.getDate()
-    var year = tmpDate.getFullYear()
-    var month =tmpDate.getMonth()+1
-    var hour = tmpDate.getHours()
-    var min = tmpDate.getMinutes()
-    if (month<10){
-      month="0"+month
-    }
-    if(day<10){
-      day ="0"+day
-    }
-    if(hour<10){
-      hour="0"+hour
-    }
-    if(min<10){
-      min="0"+min
-    }
-    this.date = year+"-"+month+"-"+day + " "+hour+":"+min
+    let now = date.formatDate(tmpDate,"YYYY-MM-DD");
+    this.date =now
     this.url = this.api_url+'/api/study/upload'
   },
   methods:{

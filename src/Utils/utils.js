@@ -17,4 +17,4 @@ function getDiff(start,unit){
   }
 
 }
-export {getDiff}
+export {getDiff,date}

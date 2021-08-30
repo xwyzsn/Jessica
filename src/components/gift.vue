@@ -73,6 +73,7 @@
 </template>
 
 <script>
+import {date} from "../Utils/utils"
 export default {
   name: "gift",
 
@@ -96,15 +97,15 @@ export default {
     const getData = async ()=>{
       this.$axios(this.api_url+"/api/study/chart").then(res=>this.total=res.data)
 
-      var len = this.total.length;
-      var sum = 0;
-      var name=null;
-      for(var i=0;i<len;i++){
+      let len = this.total.length;
+      let sum = 0;
+      let name = null;
+      for(let i=0; i<len; i++){
         if(this.total[i]["username"]===localStorage.getItem('username'))
         sum+=this.total[i]["score"];
       }
 
-      var m = 0
+      let m = 0;
       if(this.radio==="0" && this.num===undefined && this.num<=0){
         this.$q.notify({message:'啥都没选!',position:"center"})
       }
@@ -141,19 +142,9 @@ export default {
       else{
         this.$q.notify({message:"积分不够继续努力~",position:"center"})
       }
-      var DATE = new Date();
-      var d = DATE.getDate();
-      var mon = DATE.getMonth()+1;
-      var y = DATE.getFullYear();
-
-      if(mon<10){
-        mon="0"+mon
-      }
-      if(d<10){
-        d="0"+d
-      }
-      var str = y+"-"+mon+"-"+d;
-      this.$axios.post(this.api_url+"/api/study/score",{date:str,score:m,name:name,username:localStorage.getItem('username')})
+      let DATE = new Date();
+      let now = date.formatDate(DATE,"YYYY-MM-DD")
+      this.$axios.post(this.api_url+"/api/study/score",{date:now,score:m,name:name,username:localStorage.getItem('username')})
 
       .catch(err=>{
         console.log(err)})
