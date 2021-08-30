@@ -96,9 +96,9 @@ public class StudyController {
         return studyService.getUser(username);
     }
 
-    @Scheduled(cron = "0 0 8 * * *")
+    @Scheduled(cron = "0 30 8 * * *")
     public void sendMail(){
-
+        System.out.println("scheduled task running");
         studyService.sendMail();
     }
 
