@@ -9,15 +9,15 @@
           <q-avatar :icon="mdiGift" color="grey-1" text-color="pink-6" />
         </q-item-section>
 
-        <q-item-section v-if="item.gift_finish=='t'" >
-          <q-item-label lines="1" style="text-decoration: line-through;color: grey">{{item.name}}</q-item-label>
+        <q-item-section v-if="item.gift_finish==='t'" >
+          <q-item-label lines="1" style="text-decoration: line-through;color: grey">{{item.gift_name}}</q-item-label>
           <q-item-label caption>{{item.date}}</q-item-label>
         </q-item-section>
         <q-item-section v-else >
-          <q-item-label lines="1"  >{{item.name}}</q-item-label>
+          <q-item-label lines="1"  >{{item.gift_name}}</q-item-label>
           <q-item-label caption>{{item.date}}</q-item-label>
         </q-item-section>
-        <q-item-section  v-if="item.gift_finish=='f'" >
+        <q-item-section  v-if="item.gift_finish==='f'" >
           <q-checkbox v-model="not_finish[index]" label="未完成"></q-checkbox>
         </q-item-section>
         <q-item-section  v-else style="text-decoration: line-through;color: grey">
@@ -41,15 +41,15 @@
           <q-avatar :icon="mdiGift" color="grey-1" text-color="pink-6" />
         </q-item-section>
 
-        <q-item-section v-if="item.gift_finish=='t'" >
-          <q-item-label lines="1" style="text-decoration: line-through;color: grey">{{item.name}}</q-item-label>
+        <q-item-section v-if="item.gift_finish==='t'" >
+          <q-item-label lines="1" style="text-decoration: line-through;color: grey">{{item.gift_name}}</q-item-label>
           <q-item-label caption>{{item.date}}</q-item-label>
         </q-item-section>
         <q-item-section v-else >
-          <q-item-label lines="1"  >{{item.name}}</q-item-label>
+          <q-item-label lines="1"  >{{item.gift_name}}</q-item-label>
           <q-item-label caption>{{item.date}}</q-item-label>
         </q-item-section>
-        <q-item-section  v-if="item.gift_finish=='f'" >
+        <q-item-section  v-if="item.gift_finish==='f'" >
           <q-checkbox disable  label="未完成"></q-checkbox>
         </q-item-section>
         <q-item-section  v-else style="text-decoration: line-through;color: grey">

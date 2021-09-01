@@ -179,7 +179,7 @@ export default {
       .then((res2) => {
 
         this.todo = res2.data
-        this.todo=this.todo.sort((a,b)=>{return a.limittime>=b.limittime?-1:1})})
+        this.todo=this.todo.sort((a,b)=>{return a.limittime<=b.limittime?-1:1})})
       .catch((e) => console.log(e));
     this.$axios
       .get(this.api_url+"/api/study/"+this.login_user)

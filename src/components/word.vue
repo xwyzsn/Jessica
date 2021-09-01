@@ -49,7 +49,6 @@
 </template>
 
 <script>
-import axios from "axios";
 import {Column, Line} from '@antv/g2plot'
 import {date} from '../Utils/utils'
 
@@ -65,7 +64,6 @@ export default {
         this.$q.notify({message:"successfully! you can reload the page to see the graph!",position:"center"});
         this.reload()
       }).catch(e=>{console.log(e)})
-      //TODO: 还没部署到网站上,reload刷新页面
     },
      sum(arr) {
   return arr.reduce(function(acr, cur){
@@ -160,6 +158,7 @@ export default {
           }
 
         }
+        console.log(data)
         const line3 = new Line('container-each-month', {
             data,
             xField: 'month',

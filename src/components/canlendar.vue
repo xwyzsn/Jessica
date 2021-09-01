@@ -135,7 +135,7 @@ export default {
           var today = date.formatDate(timeStamp, 'YYYY-MM-DD')
 
           for (var i = 0; i < array.length; i++) {
-            let dayDiff = date.getDateDiff(array[i]['date'], today)
+            let dayDiff = date.getDateDiff(array[i]['limittime'], today)
             if (dayDiff <= 3&&dayDiff>=0) {
               this.eve[i] = {title: array[i]["content"], date: array[i]['limittime'], bgcolor: 'red'}
             } else if (dayDiff > 3 && dayDiff < 7) {

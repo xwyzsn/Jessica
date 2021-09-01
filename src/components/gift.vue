@@ -144,7 +144,7 @@ export default {
       }
       let DATE = new Date();
       let now = date.formatDate(DATE,"YYYY-MM-DD")
-      this.$axios.post(this.api_url+"/api/study/score",{date:now,score:m,name:name,username:localStorage.getItem('username')})
+      this.$axios.post(this.api_url+"/api/study/score",{date:now,score:m,gift_name:name,username:localStorage.getItem('username')})
 
       .catch(err=>{
         console.log(err)})
