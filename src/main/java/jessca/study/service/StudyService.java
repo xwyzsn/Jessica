@@ -6,7 +6,7 @@ import jessca.study.Utils.DateUtils;
 import jessca.study.entity.*;
 import jessca.study.mapper.TodoMapper;
 import jessca.study.mapper.UserMapper;
-import jessca.study.service.MailService;
+import jessca.study.mapper.WordMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -20,7 +20,10 @@ import java.nio.file.Paths;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
+
 @Service
 public class StudyService {
 
@@ -59,8 +62,8 @@ public class StudyService {
         String sql ="";
         String username = study.username;
         Integer res=null;
-        if(study.name!=null&&!study.name.equals("")){
-            name=study.name;
+        if(study.gift_name !=null&&!study.gift_name.equals("")){
+            name=study.gift_name;
             sql = "insert into study(date,score,gift_name,username) values(?,?,?,?) ";
             PreparedStatement preparedStatement = conn.prepareStatement(sql);
             preparedStatement.setString(1,date);
@@ -347,5 +350,36 @@ public class StudyService {
         userQueryWrapper.eq("name",username);
         User user = userMapper.selectOne(userQueryWrapper);
         return user;
+    }
+
+    @Autowired
+    private WordMapper wordMapper;
+    @Autowired
+    private ScoreService scoreService;
+    public void wordToStudy() {
+        QueryWrapper<Word> wordQueryWrapper = new QueryWrapper<>();
+        String today = dateUtils.getToday();
+        String lastMonth = dateUtils.subMonth();
+        wordQueryWrapper.and(i->i.lt("date",today).ge("date",lastMonth));
+        List<Word> wordList = wordMapper.selectList(wordQueryWrapper);
+        HashMap<String,List<Word>> hashMap = new HashMap<String,List<Word>>();
+        wordList.forEach(word -> {
+            if(!hashMap.containsKey(word.name)){
+                List<Word> tempList = new ArrayList<>();
+                tempList.add(word);
+                hashMap.put(word.name,tempList);
+            }else {
+                hashMap.get(word.name).add(word);
+            }
+        });
+        List<Study> list = new ArrayList<>();
+        hashMap.forEach((k,v)->{
+            AtomicInteger sum = new AtomicInteger();
+            v.forEach(word -> {
+                sum.addAndGet(word.number);
+            });
+            list.add(new Study(dateUtils.getToday (), (int) Math.floor(sum.get()/10),"f",k));
+        });
+        scoreService.saveBatch(list);
     }
 }

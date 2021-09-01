@@ -7,7 +7,7 @@ public class TotalWord {
     @Override
     public String toString() {
         return "TotalWord{" +
-                "name='" + name + '\'' +
+                "gift_name='" + name + '\'' +
                 ", total=" + total +
                 '}';
     }

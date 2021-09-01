@@ -1,39 +1,29 @@
 package jessca.study.entity;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
+import lombok.Data;
+
+@Data
 public class Word {
+    @TableId(value = "id",type = IdType.AUTO)
+    public Integer id;
     public String name;
     public int number;
     public String date;
     @Override
     public String toString() {
         return "word{" +
-                "name='" + name + '\'' +
+                "gift_name='" + name + '\'' +
                 ", number=" + number +
                 ", date='" + date + '\'' +
                 '}';
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
+    public Word(Integer id, String name, int number, String date) {
+        this.id = id;
         this.name = name;
-    }
-
-    public int getNumber() {
-        return number;
-    }
-
-    public void setNumber(int number) {
         this.number = number;
-    }
-
-    public String getDate() {
-        return date;
-    }
-
-    public void setDate(String date) {
         this.date = date;
     }
 

@@ -22,5 +22,24 @@ public class DateUtils {
         return finalDate;
     }
 
+    public String getToday(){
+        Calendar calendar = Calendar.getInstance();
+        Date date = new Date();
+        calendar.setTime(date);
+        String formatDate = "yyyy-MM-dd";
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(formatDate);
+        return simpleDateFormat.format(calendar.getTime());
+    }
+
+    public String subMonth(){
+        Calendar calendar = Calendar.getInstance();
+        Date date = new Date();
+        calendar.setTime(date);
+        calendar.add(Calendar.MONTH,-1);
+        String formatDate = "yyyy-MM-dd";
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(formatDate);
+        return simpleDateFormat.format(calendar.getTime());
+    }
+
 
 }

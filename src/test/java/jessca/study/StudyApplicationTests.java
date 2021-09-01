@@ -19,12 +19,18 @@ class StudyApplicationTests {
 		String finalDate = simpleDateFormat.format(calendar.getTime());
 		return finalDate;
 	}
+	public String getToday(){
+		Calendar calendar = Calendar.getInstance();
+		Date date = new Date();
+		calendar.setTime(date);
+		String formatDate = "yyyy-MM-dd";
+		SimpleDateFormat simpleDateFormat = new SimpleDateFormat(formatDate);
+		return simpleDateFormat.format(calendar.getTime());
+	}
 
 	@Test
 	void contextLoads() {
-		Date date = new Date();
-		String formatDate = addDate(date,-4);
-		System.out.println(formatDate);
+
 	}
 
 }
