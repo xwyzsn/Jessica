@@ -252,7 +252,7 @@ public class StudyService {
         PreparedStatement preparedStatement = connection.prepareStatement(sql);
         for (MultipartFile multipartFile:file) {
             final byte[] bytes = multipartFile.getBytes();
-            final Path path = Paths.get("C:\\Users\\zzh\\Pictures\\Camera Roll\\" + multipartFile.getOriginalFilename());
+            final Path path = Paths.get("/home/jan/Desktop/picture/" + multipartFile.getOriginalFilename());
             Files.write(path, bytes);
             preparedStatement.setString(1, String.valueOf(multipartFile.getOriginalFilename()));
             preparedStatement.setString(2, String.valueOf(title));
@@ -277,12 +277,8 @@ public class StudyService {
             String description = resultSet.getString(3);
             String []path = pathString.split(",");
             String uploadtime = resultSet.getString(4);
-
             list.add(new Picture(path,group,description,uploadtime));
         }
-
-
-
         statement.close();
         connection.close();
         return list;

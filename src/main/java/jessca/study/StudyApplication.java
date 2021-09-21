@@ -10,9 +10,9 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 
 
 @SpringBootApplication
-@MapperScan("*.mapper")
 @EnableScheduling
 @EnableAsync
+
 public class StudyApplication {
 
 

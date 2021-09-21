@@ -8,9 +8,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.annotation.PostConstruct;
 import java.sql.SQLException;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -68,7 +66,7 @@ public class StudyController {
         String date  = (String) hashMap.get("date");
         String name = (String) hashMap.get("name");
         String number = (String) hashMap.get("number");
-        studyService.addWord(new Word(name,Integer.valueOf(number),date));
+        studyService.addWord(new Word(name,Integer.parseInt(number),date));
     }
     @GetMapping(path="wordtotal")
     public List<TotalWord> getTotalWord() throws Exception {
@@ -107,10 +105,8 @@ public class StudyController {
         System.out.println("scheduled task running");
         studyService.sendMail();
     }
-    @PostConstruct
     @Scheduled(cron = "0 20 17 1 * *")
     public void wordToStudy(){
-
         studyService.wordToStudy();
     }
 
