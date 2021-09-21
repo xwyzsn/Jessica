@@ -124,7 +124,7 @@ export default {
       current: 1,
       total: 0,
       numOfOnePage: 5,
-      baseurl: 'https://jessica.xwyzsn.site/',
+      baseurl: 'https://jessica.xwyzsn.site/api/picture/',
       location:[],
       weather:[],
       iconbase:'https://gitee.com/xwyzsn/WeatherIcon/raw/master/weather-icon-S2/64/',

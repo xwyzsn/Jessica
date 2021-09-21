@@ -19,10 +19,9 @@
   :interval-height="100"
 >
   <template #day="{ timestamp }">
-    <template v-for="(event, index) in getEvents(timestamp.date)">
+    <div v-for="(event, index) in getEvents(timestamp.date)"         :key="index">
 
       <q-badge
-        :key="index"
         style="width: 100%; cursor: pointer; height: 16px; max-height: 16px"
         :class="badgeClasses(event, 'day')"
         :style="badgeStyles(event, 'day')"
@@ -46,7 +45,7 @@
       </div>
          <span class="ellipsis" >{{ event.title }}</span>
       </q-badge>
-    </template>
+    </div>
   </template>
 </q-calendar>
     </div>

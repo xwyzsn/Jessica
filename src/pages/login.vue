@@ -1,5 +1,5 @@
 <template>
-  <div v-if="pics" class="fullscreen my-bg"  v-bind:style="{backgroundImage: 'url('+this.pic+')'}">
+<!--  <div v-if="pics" class="fullscreen my-bg"  v-bind:style="{backgroundImage: 'url('+this.pic+')'}">-->
   <div class="   q-pa-md absolute-center " style="max-width: 100%;width: 100%;background-color: white;opacity: 0.9">
     <div class="row text-h5 justify-center q-pb-lg">
       登录
@@ -38,7 +38,7 @@
     </q-form>
 
   </div>
-  </div>
+<!--  </div>-->
 </template>
 <script>
 import axios from "axios";
@@ -78,9 +78,10 @@ export default {
             method:"get",
             url:this.api_url+"/api/study/user/"+this.name
           }).then((data)=>{
+            console.log(data)
             localStorage.setItem('email',data.data.email)
             localStorage.setItem('userId',data.data.id)
-            that.$router.push({name:'main'})
+            that.$router.push({path:'/main'})
           })
         }
       })
@@ -94,22 +95,24 @@ export default {
     }
   },
   mounted() {
-    fetch('https://jessica.xwyzsn.site/proxy/HPImageArchive.aspx?format=js&idx=5&n=5&mkt=zh-CN')
-      .then(res=>res.json())
-      .then(data=>{
-        this.pics=data
-        let m = Math.floor(Math.random()*5);
-        this.pic="https://cn.bing.com/"+this.pics.images[m].url
-        // this.show=true
-      })
+    // fetch('https://newsite./proxy/HPImageArchive.aspx?format=js&idx=5&n=5&mkt=zh-CN')
+    //   .then(res=>res.json())
+    //   .then(data=>{
+    //     this.pics=data
+    //     let m = Math.floor(Math.random()*5);
+    //     this.pic="https://cn.bing.com/"+this.pics.images[m].url
+    //     // this.show=true
+    //   })
     if(localStorage.getItem('auth')){
-      axios.get(this.api_url+'/api/study/user',{
+      axios.get(this.api_url+'/api/study/user/'+localStorage.getItem('username'),{
         headers:{
           "Authorization":localStorage.getItem('auth')
         }
       })
       .then(res=>{
+        console.log(res.data)
         if(res.data !== undefined){
+          console.log('push router')
           this.$router.push({name:'main'})
         }
         else{
@@ -122,8 +125,5 @@ export default {
 </script>
 
 <style scoped>
-.my-bg{
-  z-index: -1;
-  opacity: 1;
-}
+
 </style>
