@@ -2,7 +2,7 @@
   <div>
     <div class="row ">
       <div class="col-3 q-ma-md">
-        <q-img src="s://gitee.com/xwyzsn/Picture/raw/master/123456.jpg">
+        <q-img src="https://gitee.com/xwyzsn/Picture/raw/master/123456.jpg">
           <q-tooltip anchor="top middle" self="top middle"
                       transition-show="flip-right"
                       transition-hide="flip-left">10积分</q-tooltip>
@@ -11,7 +11,7 @@
         <q-radio label="milktea" val="1" v-model="radio"></q-radio>
       </div>
       <div class="col-3 q-ma-md">
-        <q-img src="s://gitee.com/xwyzsn/Picture/raw/master/hotpot.jpg" >
+        <q-img src="https://gitee.com/xwyzsn/Picture/raw/master/hotpot.jpg" >
           <q-tooltip
             anchor="top middle" self="top middle"
             transition-show="flip-right"
@@ -20,7 +20,7 @@
         <q-radio label="hotpot" val="2" v-model="radio"></q-radio>
       </div>
       <div class="col-3 q-mt-md">
-        <q-img src="s://gitee.com/xwyzsn/Picture/raw/master/train.jpg">
+        <q-img src="https://gitee.com/xwyzsn/Picture/raw/master/train.jpg">
           <q-tooltip           transition-show="flip-right"
                                transition-hide="flip-left"
                                anchor="top middle" self="top middle">100积分</q-tooltip>
@@ -30,7 +30,7 @@
     </div>
     <div class="row">
       <div class="col-3 q-ma-md">
-        <q-img src="s://gitee.com/xwyzsn/Picture/raw/master/star.jpg">
+        <q-img src="https://gitee.com/xwyzsn/Picture/raw/master/star.jpg">
           <q-tooltip
             anchor="top middle" self="top middle"
             transition-show="flip-right"
@@ -39,7 +39,7 @@
         <q-radio label="wish" val="4" v-model="radio"></q-radio>
       </div>
       <div class="col-3 q-ma-md">
-        <q-img :ratio="2/2" src="s://gitee.com/xwyzsn/Picture/raw/master/image-20210421184556773.png">
+        <q-img :ratio="2/2" src="https://gitee.com/xwyzsn/Picture/raw/master/image-20210421184556773.png">
           <q-tooltip
             anchor="top middle" self="top middle"
             transition-show="flip-right"
