@@ -64,9 +64,8 @@ export default {
       axios({
         method:"post",
         data:form,
-        url:this.api_url+"/login"
+        url:this.api_url+"/api/study/login"
       }).then(res=>{
-
         if (res.data.code===400){
           this.$q.notify({message:'用户名或密码错误',icon: 'error',position:"center"})
         }

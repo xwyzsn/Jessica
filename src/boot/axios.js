@@ -5,12 +5,14 @@ import axios  from "axios";
 axios.interceptors.request.use(config=>{
   if (localStorage.getItem('auth')){
     config.headers.Authorization=localStorage.getItem('auth')
+    config.headers["Access-Control-Allow-Origin"]="*";
   }
   return config
 })
 export default boot(async ({app}/* { app, router, ... } */) => {
   // something to do
     app.config.globalProperties.$axios = axios
+
 
 })
 export {axios}
