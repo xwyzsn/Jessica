@@ -86,6 +86,11 @@ public class StudyController {
     public List<Picture> getPictureInfo() throws Exception {
         return studyService.getPictureInfo();
     }
+    @GetMapping("/daily_word")
+    public DailyWord getDailyWord() throws Exception{
+        return studyService.getDailyWord();
+    }
+
     @GetMapping("/giftlist")
     public List<Study> getGiftList() throws Exception {
        return studyService.getGiftList();

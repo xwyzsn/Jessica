@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import jessca.study.Configure.DruidFactory;
 import jessca.study.Utils.DateUtils;
 import jessca.study.entity.*;
+import jessca.study.mapper.DailywordMapper;
 import jessca.study.mapper.TodoMapper;
 import jessca.study.mapper.UserMapper;
 import jessca.study.mapper.WordMapper;
@@ -173,6 +174,7 @@ public class StudyService {
     public List<Chart> getCharGreatZero() throws Exception {
         Connection conn = DruidFactory.getConnection();
         Statement statement = conn.createStatement();
+        //TODO: sql view视图更新 score_view;
         String sql ="SELECT date,sum(score) FROM study WHERE score>=0 GROUP BY date ORDER BY date ";
         List<Chart> l = new ArrayList<>();
         ResultSet resultSet = statement.executeQuery(sql);
@@ -215,7 +217,6 @@ public class StudyService {
         Connection connection = DruidFactory.getConnection();
         Statement statement = connection.createStatement();
         String sql = "INSERT into word(name,number,date) values( \""+word.name+"\","+word.number+",\""+word.date+"\" )";
-        System.out.println(sql);
         int f =statement.executeUpdate(sql);
 
         if(f!=0){
@@ -252,7 +253,7 @@ public class StudyService {
         PreparedStatement preparedStatement = connection.prepareStatement(sql);
         for (MultipartFile multipartFile:file) {
             final byte[] bytes = multipartFile.getBytes();
-            final Path path = Paths.get("/home/jan/Desktop/picture/" + multipartFile.getOriginalFilename());
+            final Path path = Paths.get("/home/jan/Desktop/picture/api/picture" + multipartFile.getOriginalFilename());
             Files.write(path, bytes);
             preparedStatement.setString(1, String.valueOf(multipartFile.getOriginalFilename()));
             preparedStatement.setString(2, String.valueOf(title));
@@ -287,6 +288,8 @@ public class StudyService {
     public List<Study> getGiftList() throws Exception {
         Connection connection = DruidFactory.getConnection();
         Statement statement = connection.createStatement();
+        // select * from Gift_view;
+
         String sql = "SELECT * FROM study WHERE score<0 and gift_name is NOT NULL  ORDER BY date DESC";
         ResultSet resultSet = statement.executeQuery(sql);
         List<Study> list = new ArrayList<>();
@@ -324,6 +327,11 @@ public class StudyService {
     private DateUtils dateUtils;
     @Autowired
     private UserMapper userMapper;
+
+    @Autowired
+    private DailywordMapper dailyWordMapper;
+
+
     public void sendMail() {
         java.util.Date date = new Date();
         String deadline = dateUtils.addDate(date,3);
@@ -378,4 +386,17 @@ public class StudyService {
         });
         scoreService.saveBatch(list);
     }
+
+    public DailyWord getDailyWord() {
+        String today = dateUtils.getToday();
+        QueryWrapper<DailyWord> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("date",today);
+        DailyWord dailyWord = dailyWordMapper.selectOne(queryWrapper);
+        System.out.println(dailyWord);
+        return dailyWord;
+
+    }
+
+//    public List<DailyWord> getDailyWord() {
+//    }
 }

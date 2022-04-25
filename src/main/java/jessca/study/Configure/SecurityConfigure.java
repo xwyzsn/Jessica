@@ -68,7 +68,7 @@ public class SecurityConfigure extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.cors().and().csrf().disable()
-                .formLogin()
+                .formLogin().loginPage("/api/study/login")
                 .successHandler(successHandler)
                 .failureHandler(failHandler)
                 .and()

@@ -28,9 +28,10 @@ class StudyApplicationTests {
 		return simpleDateFormat.format(calendar.getTime());
 	}
 
+
 	@Test
 	void contextLoads() {
-
+//		System.out.println(getToday());
 	}
 
 }
