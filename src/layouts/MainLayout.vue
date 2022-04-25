@@ -79,6 +79,14 @@
               兑换记录
             </q-item-section>
           </q-item>
+          <q-item to="/daily_word" clickable v-ripple>
+            <q-item-section avatar>
+              <q-icon :name="mdiFileWordBox"/>
+            </q-item-section>
+            <q-item-section>
+              今日单词
+            </q-item-section>
+          </q-item>
         </q-list>
 
       </q-scroll-area>
@@ -94,7 +102,7 @@
 
 <script>
 import {outlinedSortByAlpha,outlinedInsertPhoto,outlinedCardGiftcard,outlinedEdit,outlinedTimeline,} from "@quasar/extras/material-icons-outlined"
-import {mdiHistory } from "@quasar/extras/mdi-v5"
+import {mdiHistory,mdiFileWordBox } from "@quasar/extras/mdi-v5"
 export default {
   data () {
     return {
@@ -108,6 +116,7 @@ export default {
     this.outlinedEdit=outlinedEdit
     this.outlinedTimeline=outlinedTimeline
     this.mdiHistory=mdiHistory
+    this.mdiFileWordBox=mdiFileWordBox
   },
   methods:{
     logout(){

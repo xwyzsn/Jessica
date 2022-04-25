@@ -18,7 +18,8 @@ const routes = [
       {path: '/chart',component:()=>import('components/chart.vue')},
       {path: '/word',component:()=>import('components/word.vue')},
       {path: '/pic',component:()=>import('components/upload.vue')},
-      {path:'/g-list',component:()=>import('components/giftchange.vue')}
+      {path:'/g-list',component:()=>import('components/giftchange.vue')},
+      {path: '/daily_word',component:()=>import('components/dailyWord.vue')}
     ]
   },
   // Always leave this as last one,
